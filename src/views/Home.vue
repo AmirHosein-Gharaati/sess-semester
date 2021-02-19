@@ -206,7 +206,8 @@
           :items-per-page="results.length"
           hide-default-footer
           @click:row="handle"
-        ></v-data-table>
+        >
+        </v-data-table>
 
       </v-container>
 
@@ -279,9 +280,11 @@ export default {
           }
         }
       }
+      console.log(this.results)
     },
     handle(value){
-      alert(value.name)
+      this.courseId = value.id
+      this.$router.push({name: 'Course', params : {id : value.id}})
     },
     remove(item){
       if(item.parent.label === 'بخش'){
@@ -298,7 +301,7 @@ export default {
   watch:{
   },
   computed:{
-    ...mapFields(['filters','json']),
+    ...mapFields(['filters','json','courseId']),
     ...mapGetters([
       'getSemesters',
        'getUnits',
