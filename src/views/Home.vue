@@ -42,6 +42,9 @@
           label="نیمسال تحصیلی*"
           v-model="filters.semester"
           :rules="rules"
+          :items="getSemesters"
+          hide-no-data
+          hide-selected
           >
             
           </v-autocomplete>
@@ -52,15 +55,26 @@
           solo 
           label="بخش"
           v-model="filters.unit"
+          :items="getUnits"
+          multiple
+          hide-no-data
+          chips
           >
           </v-autocomplete>
         </v-col>
 
+      </v-row>
+
+      <v-row>
         <v-col>
           <v-autocomplete 
           solo 
           label="درس"
           v-model="filters.course"
+          :items="getCourses"
+          multiple
+          hide-no-data
+          chips
           >
           </v-autocomplete>
         </v-col>
@@ -70,26 +84,31 @@
           solo 
           label="نام استاد"
           v-model="filters.teacherName"
+          :items="getTeachers"
+          hide-no-data
+          multiple
+          chips
           >
           </v-autocomplete>
         </v-col>
-
       </v-row>
        
       <v-row>
          <v-col cols="3">
           <v-autocomplete 
           solo 
-          label="ساعت برگزاری کلاس"
+          label="ساعت برگزاری کلاس(به زودی)"
           v-model="filters.time"
+          disabled
           >
           </v-autocomplete>
         </v-col>
         <v-col cols="3">
           <v-autocomplete 
           solo 
-          label="مکان برگزاری کلاس"
+          label="مکان برگزاری کلاس(به زودی)"
           v-model="filters.place"
+          disabled
           >
           </v-autocomplete>
         </v-col>
@@ -108,19 +127,19 @@
       
       <v-row class="indigo lighten-4 ma-4 rounded-t-xl font-weight-medium">
         <v-col cols="2" class="text-center">
-          <h3>نام درس</h3>
+          <h3>درس</h3>
         </v-col>
 
         <v-col cols="2" class="text-center">
-          <h3>نام استاد</h3>
-        </v-col>
-
-        <v-col cols="1" class="text-center">
-          <h3>واحد</h3>
+          <h3>استاد</h3>
         </v-col>
 
         <v-col cols="1" class="text-center">
           <h3>گروه</h3>
+        </v-col>
+
+        <v-col cols="1" class="text-center">
+          <h3>واحد</h3>
         </v-col>
 
         <v-col cols="3" class="text-center">
@@ -138,13 +157,17 @@
 
 <script>
 import { mapFields } from 'vuex-map-fields';
+import { mapGetters } from 'vuex';
 
 export default {
   name: 'Home',
   data(){
     return{
-      rules: [ value => !!value || 'نیمسال تحصیلی باید انتخاب شود.']
+      rules: [ value => !!value || 'نیمسال تحصیلی باید انتخاب شود.'],
+      search: null,
     }
+  },
+  watch: {
   },
   methods:{
     test(){
@@ -153,8 +176,8 @@ export default {
   },
   computed:{
     ...mapFields(['filters']),
-
-  }
+    ...mapGetters(['getSemesters', 'getUnits','getCourses','getTeachers']),
+  },
   
 }
 </script>
