@@ -13,13 +13,15 @@ const state = {
     },
 
     filtersItems: {
-        semesters: ['1399-2'],
+        semesters: ['1399-2'], 
         units: [],
         course: [],
         teachersName: [],
         times: [],
         places: [],
-    }
+    },
+
+    json: null,
 }
 
 const getters = {

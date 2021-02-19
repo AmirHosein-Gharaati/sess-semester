@@ -9,23 +9,18 @@
 
 <script>
 import { mapFields } from 'vuex-map-fields';
-import json from './1399-2.json';
+import j from './1399-2.json';
 
 
 export default {
   name: 'App',
 
   computed:{
-    ...mapFields(['filtersItems']),
-  },
-
-  data(){
-    return{
-      json
-    }
+    ...mapFields(['filtersItems','json']),
   },
   mounted(){
-    
+    this.json = j;
+
     for(let unit in this.json){
       this.filtersItems.units.push(unit);
 
@@ -34,7 +29,7 @@ export default {
         this.filtersItems.teachersName.push(this.json[unit][course].teacher);
       }
     }
-  }
+  },
 };
 </script>
 
