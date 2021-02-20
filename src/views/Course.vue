@@ -10,6 +10,7 @@ import { mapFields } from 'vuex-map-fields';
 
 export default {
     name: 'Course',
+    props: ['id'],
     computed: {
         ...mapFields(['courseId']),
     }

@@ -80,6 +80,8 @@
           hide-no-data
           hide-selected
           chips
+          :search-input.sync="searchInput1"
+          @change="searchInput1 = ''"
           >
             <template v-slot:selection="data">
             <v-chip
@@ -103,6 +105,8 @@
           multiple
           hide-no-data
           chips
+          :search-input.sync="searchInput2"
+          @change="searchInput2 = ''"
           >
           <template v-slot:selection="data">
             <v-chip
@@ -129,6 +133,8 @@
           multiple
           hide-no-data
           chips
+          :search-input.sync="searchInput3"
+          @change="searchInput3 = ''"
           >
           <template v-slot:selection="data">
             <v-chip
@@ -151,6 +157,8 @@
           hide-no-data
           multiple
           chips
+          :search-input.sync="searchInput4"
+          @change="searchInput4 = ''"
           >
           <template v-slot:selection="data">
             <v-chip
@@ -185,7 +193,7 @@
           </v-autocomplete>
         </v-col>
         <v-col class="text-center">
-          <v-btn width="300" x-large class="blue white--text" @click="test">
+          <v-btn width="300" x-large class="blue white--text" @click="search">
             <h3>جستجو</h3>
           </v-btn>
         </v-col>
@@ -231,8 +239,13 @@ export default {
   name: 'Home',
   data(){
     return{
+      searchInput1 : '',
+      searchInput2 : '',
+      searchInput3 : '',
+      searchInput4 : '',
+      showAlert : false,
+      errorMessages: [],
       rules: [ value => !!value || 'نیمسال تحصیلی باید انتخاب شود.'],
-      results : [],
       dataTableHeaders:[
         {text: 'درس', value: 'name'}, 
         {text: 'استاد', value: 'teacher'},
@@ -240,14 +253,11 @@ export default {
         {text: 'واحد', value: 'total_unit'},
         {text: 'زمان و مکان کلاس', value: 'time_and_place'},
         {text: 'تاریخ امتحان نهایی', value: 'final_date'},
-        
       ],
-      showAlert : false,
-      errorMessages: [],
     }
   },
   methods:{
-    test(){
+    search(){
       let flag = 0;
       this.errorMessages = []
 
@@ -280,7 +290,6 @@ export default {
           }
         }
       }
-      console.log(this.results)
     },
     handle(value){
       this.courseId = value.id
@@ -301,7 +310,12 @@ export default {
   watch:{
   },
   computed:{
-    ...mapFields(['filters','json','courseId']),
+    ...mapFields([
+      'filters',
+      'json',
+      'courseId',
+      'results'
+      ]),
     ...mapGetters([
       'getSemesters',
        'getUnits',

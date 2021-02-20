@@ -3,6 +3,8 @@ import { getField, updateField} from 'vuex-map-fields';
 
 const state = {
 
+    results: [],
+
     filters: {
         semester: '',
         unit: [],
