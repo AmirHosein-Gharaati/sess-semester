@@ -1,12 +1,10 @@
 <template>
   <div class="home">
-
-
     <v-dialog
       v-model="showAlert"
       width="400"
     >
-      <v-container class="white">
+      <v-container class="white" fluid>
         <v-card class="my-2  white">
           <v-card-title class="red white--text">
             <h2>خطا</h2>
@@ -26,51 +24,58 @@
 
         <v-container class="text-center">
             <v-btn @click="showAlert = false" class="orange lighten-3">
-            بسته
+            بستن
           </v-btn>
         </v-container>
 
       </v-container>
     </v-dialog>
 
-    <v-container fluid >
-      <v-row >
-        <v-col align-self="center" class="text-center">
+    <v-container fluid>
+      <v-layout row wrap align-center class="d-none d-lg-flex d-xl-none">
+
+        <v-flex align-self="center" class="text-center white--text ma-2" lg4>
+          <h3 class="font-weight-bold">به روز شده در: ۱۴ فروردین ۱۴۰۰</h3>
+        </v-flex>
+
+        <v-flex align-self="center" lg4 class="ma-2 text-center">
+            <h1 class="white--text" justify="center">برنامه کلاسی نیمسال</h1>
+            <h3 class="orange--text" justify="center">دانشگاه شیراز</h3>
+        </v-flex>
+
+        <v-flex align-self="center" class="text-center ma-2">
           <v-btn class="blue white--text" disabled>
             <h4 class="font-weight-bold">چیدن و زمانبندی برنامه درسی</h4>
             <h4>(به زودی)</h4>
           </v-btn>
-        </v-col>
+        </v-flex>
 
-        
-        <v-col align-self="center">
-          
-          <v-row class="text-center white--text" justify="center">
-            <h1>برنامه کلاسی نیمسال</h1>
-          </v-row>
-          <v-row justify="center" class="orange--text ">
-            <h3>دانشگاه شیراز</h3>
-          </v-row>
-        </v-col>
+      </v-layout>
 
-        <v-col align-self="center" class="text-center white--text">
-          <h3 class="font-weight-bold">به روز شده در: ۱۴ فروردین ۱۴۰۰</h3>
-        </v-col>
-        
-      </v-row>
+      <!-- Another layout -->
+      <v-layout row wrap align-center class="d-lg-none d-xl-flex">
+        <v-flex align-self="center" xs12 class="ma-1 text-center">
+            <h1 class="white--text" justify="center">برنامه کلاسی نیمسال</h1>
+            <h3 class=" orange--text" justify="center">دانشگاه شیراز</h3>
+        </v-flex>
+
+        <v-flex align-self="center" class="text-center white--text mt-6" xs12>
+          <h4 class="font-weight-bold">به روز شده در: ۱۴ فروردین ۱۴۰۰</h4>
+        </v-flex>
+      </v-layout>
+
     </v-container>
 
     <v-spacer class="mt-6"></v-spacer>
 
-    
-
-    <v-container class="white rounded-lg px-6">
+    <v-container class="white rounded-lg px-6" fluid>
+      
       <v-row justify="center">
         <h2 class="my-4">فیلتر</h2>
       </v-row>
 
-      <v-row>
-        <v-col>
+      <v-layout row wrap align-center>
+        <v-flex lg3 xs12>
           <v-autocomplete 
           solo 
           label="نیمسال تحصیلی*"
@@ -82,6 +87,7 @@
           chips
           :search-input.sync="searchInput1"
           @change="searchInput1 = ''"
+          class="ma-2"
           >
             <template v-slot:selection="data">
             <v-chip
@@ -94,9 +100,9 @@
           </template>
 
           </v-autocomplete>
-        </v-col>
+        </v-flex>
 
-        <v-col>
+        <v-flex lg3 xs12>
           <v-autocomplete 
           solo 
           label="بخش"
@@ -107,6 +113,7 @@
           chips
           :search-input.sync="searchInput2"
           @change="searchInput2 = ''"
+          class="ma-2"
           >
           <template v-slot:selection="data">
             <v-chip
@@ -119,12 +126,9 @@
           </template>
 
           </v-autocomplete>
-        </v-col>
+        </v-flex>
 
-      </v-row>
-
-      <v-row>
-        <v-col>
+        <v-flex lg3 xs12>
           <v-autocomplete 
           solo 
           label="درس"
@@ -135,6 +139,7 @@
           chips
           :search-input.sync="searchInput3"
           @change="searchInput3 = ''"
+          class="ma-2"
           >
           <template v-slot:selection="data">
             <v-chip
@@ -146,9 +151,9 @@
             </v-chip>
           </template>
           </v-autocomplete>
-        </v-col>
+        </v-flex>
 
-        <v-col>
+        <v-flex lg3 xs12>
           <v-autocomplete 
           solo 
           label="نام استاد"
@@ -159,6 +164,7 @@
           chips
           :search-input.sync="searchInput4"
           @change="searchInput4 = ''"
+          class="ma-2"
           >
           <template v-slot:selection="data">
             <v-chip
@@ -170,39 +176,42 @@
             </v-chip>
           </template>
           </v-autocomplete>
-        </v-col>
-      </v-row>
+        </v-flex>
+      </v-layout>
        
-      <v-row>
-         <v-col cols="3">
+      <v-layout row wrap>
+         <v-flex lg3 xs12>
           <v-autocomplete 
           solo 
           label="ساعت برگزاری کلاس(به زودی)"
           v-model="filters.time"
           disabled
+          class="ma-2"
           >
           </v-autocomplete>
-        </v-col>
-        <v-col cols="3">
+        </v-flex>
+
+        <v-flex lg3 xs12>
           <v-autocomplete 
           solo 
           label="مکان برگزاری کلاس(به زودی)"
           v-model="filters.place"
           disabled
+          class="ma-2"
           >
           </v-autocomplete>
-        </v-col>
+        </v-flex>
         <v-col class="text-center">
           <v-btn width="300" x-large class="blue white--text" @click="search">
             <h3>جستجو</h3>
           </v-btn>
         </v-col>
-      </v-row>
+      </v-layout>
     </v-container>
 
     <v-spacer class="my-6"></v-spacer>
 
-    <v-container class="white rounded-lg">
+    <v-container class="white rounded-lg" fluid>
 
       <v-container v-if="results.length !== 0">
         <h2 class="text-center mb-4 mt-2">نتایج جستجو</h2>
@@ -218,10 +227,8 @@
         </v-data-table>
 
       </v-container>
-
-      
-        <v-row v-else justify="center" class="ma-2">
-          <h2>
+        <v-row v-else class="ma-2" justify="center">
+          <h2 class="text-center">
             برای نمایش نتایج، فیلتر ها را پر کنید
           </h2>
         </v-row>
@@ -255,6 +262,9 @@ export default {
         {text: 'تاریخ امتحان نهایی', value: 'final_date'},
       ],
     }
+  },
+  created(){
+    this.filters.semester = this.getFilterItems.semesters[0]
   },
   methods:{
     search(){
@@ -292,7 +302,7 @@ export default {
       }
     },
     handle(value){
-      this.courseId = value.id
+      this.course = value
       this.$router.push({name: 'Course', params : {id : value.id}})
     },
     remove(item){
@@ -313,8 +323,8 @@ export default {
     ...mapFields([
       'filters',
       'json',
-      'courseId',
-      'results'
+      'course',
+      'results',
       ]),
     ...mapGetters([
       'getSemesters',
@@ -332,5 +342,9 @@ export default {
 <style scoped>
 .row-pointer >>> tbody tr :hover {
   cursor: pointer;
+}
+
+.home{
+  font-family: "IRANSans";
 }
 </style>

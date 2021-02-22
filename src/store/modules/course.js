@@ -1,7 +1,7 @@
 import { getField, updateField} from 'vuex-map-fields';
 
 const state = {
-    courseId : null
+    course : {},
 }
 
 const getters = {

@@ -33,6 +33,7 @@ const getters = {
     getUnits: state => state.filtersItems.units,
     getCourses: state => state.filtersItems.course,
     getTeachers: state => state.filtersItems.teachersName,
+    getJson: state => state.json
 }
 
 const mutations = {
