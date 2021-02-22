@@ -1,50 +1,48 @@
-import { getField, updateField} from 'vuex-map-fields';
- 
+import { getField, updateField } from "vuex-map-fields";
 
 const state = {
+  results: [],
 
-    results: [],
+  filters: {
+    semester: "",
+    unit: [],
+    course: [],
+    teacherName: [],
+    time: [],
+    place: [],
+  },
 
-    filters: {
-        semester: '',
-        unit: [],
-        course: [],
-        teacherName: [],
-        time: [],
-        place: [],
-    },
+  filtersItems: {
+    semesters: ["1399-2"],
+    units: [],
+    course: [],
+    teachersName: [],
+    times: [],
+    places: [],
+  },
 
-    filtersItems: {
-        semesters: ['1399-2'], 
-        units: [],
-        course: [],
-        teachersName: [],
-        times: [],
-        places: [],
-    },
-
-    json: null,
-}
+  json: null,
+};
 
 const getters = {
-    getField,
-    getFilterItems : state => state.filtersItems,
-    getSemesters : state => state.filtersItems.semesters,
-    getUnits: state => state.filtersItems.units,
-    getCourses: state => state.filtersItems.course,
-    getTeachers: state => state.filtersItems.teachersName,
-    getJson: state => state.json
-}
+  getField,
+  getFilterItems: (state) => state.filtersItems,
+  getSemesters: (state) => state.filtersItems.semesters,
+  getUnits: (state) => state.filtersItems.units,
+  getCourses: (state) => state.filtersItems.course,
+  getTeachers: (state) => state.filtersItems.teachersName,
+  getJson: (state) => state.json,
+};
 
 const mutations = {
-    updateField,
-}
+  updateField,
+};
 
-const actions = {}
+const actions = {};
 
 export default {
-    state,
-    getters,
-    mutations,
-    actions
-}
+  state,
+  getters,
+  mutations,
+  actions,
+};

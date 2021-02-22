@@ -1,24 +1,22 @@
-import { getField, updateField} from 'vuex-map-fields';
+import { getField, updateField } from "vuex-map-fields";
 
 const state = {
-    course : {},
-}
+  course: {},
+};
 
 const getters = {
-    getField,
-}
+  getField,
+};
 
 const mutations = {
-    updateField,
-}
+  updateField,
+};
 
-const actions = {
-
-}
+const actions = {};
 
 export default {
-    state,
-    getters,
-    mutations,
-    actions
-}
+  state,
+  getters,
+  mutations,
+  actions,
+};
