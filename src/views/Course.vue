@@ -1,8 +1,7 @@
 <template>
-  <div class="course">
+  <div class="">
     <v-container class="white ma-4 rounded-lg" fluid>
       <h2 class="text-center">اطلاعات کلی درس</h2>
-
       <v-row>
         <v-col>
           <h2 class="title">شماره سریال درس</h2>

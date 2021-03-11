@@ -235,6 +235,9 @@ export default {
   created() {
     this.filters.semester = this.getFilterItems.semesters[0];
   },
+  mounted(){
+    console.log(this.filters.semester)
+  },
   methods: {
     search() {
       let flag = 0;
@@ -301,7 +304,6 @@ export default {
       }
     },
   },
-  watch: {},
   computed: {
     ...mapFields(["filters", "json", "course", "results"]),
     ...mapGetters([

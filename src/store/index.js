@@ -9,5 +9,7 @@ export default new Vuex.Store({
   modules: {
     home,
   },
-  plugins: [createPersistedState()],
+  plugins: [createPersistedState({
+    paths: ['']
+  })],
 });
