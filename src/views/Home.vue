@@ -1,7 +1,7 @@
 <template>
-  <div class="home">
+  <div class="home" style="padding: 0.5vw; margin: 1vw 4vw">
     <v-dialog v-model="showAlert" width="400">
-      <v-container class="white" fluid>
+      <v-container class="white text-center" fluid>
         <v-card class="my-2  white">
           <v-card-title class="red white--text">
             <h2>خطا</h2>
@@ -60,7 +60,7 @@
 
     <v-spacer class="mt-6"></v-spacer>
 
-    <v-container class="white rounded-lg px-6" fluid>
+    <div class="white rounded-lg px-6" >
       <v-row justify="center">
         <h2 class="my-4">فیلتر</h2>
       </v-row>
@@ -180,15 +180,17 @@
           </v-btn>
         </v-col>
       </v-layout>
-    </v-container>
+    </div>
 
     <v-spacer class="my-6"></v-spacer>
 
-    <v-container class="white rounded-lg" fluid>
-      <v-container v-if="results.length !== 0">
-        <h2 class="text-center mb-4 mt-2">نتایج جستجو</h2>
+    <div class="white rounded-lg justify-content-center" fluid>
 
-        <v-data-table
+      <div v-if="results.length !== 0" class="pa-6">
+        <h2 class="text-center my-4">نتایج جستجو</h2>
+
+        <v-layout class="d-none d-lg-flex d-xl-none" align-center>
+          <v-data-table
           :headers="dataTableHeaders"
           :items="results"
           class="elevation-1 row-pointer"
@@ -197,13 +199,28 @@
           @click:row="handle"
         >
         </v-data-table>
-      </v-container>
-      <v-row v-else class="ma-2" justify="center">
+        </v-layout>
+
+        <v-layout class="d-lg-none d-xl-flex" align-center>
+          <v-data-table
+          :headers="dataTableHeaders2"
+          :items="results"
+          class="elevation-1 row-pointer"
+          :items-per-page="results.length"
+          hide-default-footer
+          @click:row="handle"
+        >
+        </v-data-table>
+        </v-layout>
+        
+      </div>
+
+      <v-row v-else class="ma-2 pa-4" justify="center">
         <h2 class="text-center">
           برای نمایش نتایج، فیلتر ها را پر کنید
         </h2>
       </v-row>
-    </v-container>
+    </div>
   </div>
 </template>
 
@@ -223,20 +240,24 @@ export default {
       errorMessages: [],
       rules: [(value) => !!value || "نیمسال تحصیلی باید انتخاب شود."],
       dataTableHeaders: [
-        { text: "درس", value: "name" },
+        { text: "درس", value: "title" },
         { text: "استاد", value: "teacher" },
         { text: "گروه", value: "group" },
-        { text: "واحد", value: "total_unit" },
-        { text: "زمان و مکان کلاس", value: "time_and_place" },
-        { text: "تاریخ امتحان نهایی", value: "final_date" },
+        { text: "واحد", value: "vahed" },
+        { text: "زمان و مکان کلاس", value: "time_room" }
       ],
+      dataTableHeaders2 : [
+        { text: "درس", value: "title" },
+        { text: "استاد", value: "teacher" },
+        { text: "گروه", value: "group" },
+        { text: "واحد", value: "vahed" },
+      ]
     };
   },
   created() {
     this.filters.semester = this.getFilterItems.semesters[0];
   },
   mounted(){
-    console.log(this.filters.semester)
   },
   methods: {
     search() {
@@ -265,6 +286,8 @@ export default {
       }
 
       this.results = [];
+      //TODO
+      
       for (let unit in this.json) {
         if (
           this.filters.unit.length === 0 ||
@@ -273,7 +296,7 @@ export default {
           for (let course in this.json[unit]) {
             if (
               this.filters.course.length === 0 ||
-              this.filters.course.includes(this.json[unit][course]["name"])
+              this.filters.course.includes(this.json[unit][course]["title"])
             ) {
               if (
                 this.filters.teacherName.length === 0 ||
@@ -290,16 +313,16 @@ export default {
     },
     handle(value) {
       this.course = value;
-      this.$router.push({ name: "Course", params: { id: value.id } });
+      this.$router.push({ name: "Course", params: { id: value.id} });
     },
     remove(item) {
-      if (item.parent.label === "بخش") {
+      if (item.parent.label.includes("بخش")) {
         this.filters.unit.pop(item.data);
-      } else if (item.parent.label === "درس") {
+      } else if (item.parent.label.includes("درس")) {
         this.filters.course.pop(item.data);
-      } else if (item.parent.label === "نام استاد") {
+      } else if (item.parent.label.includes("نام استاد")) {
         this.filters.teacherName.pop(item.data);
-      } else if (item.parent.label === "نیمسال تحصیلی*") {
+      } else if (item.parent.label.includes("نیمسال تحصیلی")) {
         this.filters.semester = "";
       }
     },
