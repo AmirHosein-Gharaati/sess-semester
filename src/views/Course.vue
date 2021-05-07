@@ -1,23 +1,88 @@
 <template>
-  <div class="">
-    <div class="white ma-4 rounded-lg" fluid>
-      <h1 class="text-center">اطلاعات کلی درس</h1>
-      <v-container style="height:2vw"></v-container>
+  <div class="home">
+    <div class="white ma-4 rounded-lg">
+      <h1 class="text-center">مشخصات کلی درس</h1>      
+    </div>
+
+    <div class="white ma-4 rounded-lg pa-12">
+      <v-row>
+        <h2>{{ course['title'] }} | {{ course['vahed'] }} واحد</h2>
+      </v-row>
       
-      <div v-for="keyy in titles" :key="keyy.id" class="my-4">
-        <v-row align="center" class="grey mx-10" style="height:1px;"></v-row>
-        <v-row class="text-center" align="center">
-          <v-col cols="6">
-            <h3 >{{ keyy[0] }}</h3>
+      <div class="body-font mt-8">
+        <v-row>
+          <v-col>
+            <span class="title-font-weight">نام استاد : </span>
+            <span >{{ course['teacher'] }}</span>
           </v-col>
-          <v-col cols="6" >
-            <h3 style="color:blue" class="px-2">{{ course[keyy[1]] }}</h3>
+
+          <v-col>
+            <span class="title-font-weight">نام بخش : </span>
+            <span>{{ course['unit'] }}</span>
+          </v-col>
+
+          <v-col>
+            <span class="title-font-weight">تاریخ امتحان : </span>
+            <span>{{ course['final_date'] }}</span>
+          </v-col>
+        </v-row>
+
+        <v-row>
+          <v-col>
+            <span class="title-font-weight">شماره گروه : </span>
+            <span>{{ course['group'] }}</span>
+          </v-col>
+
+          
+
+          <v-col>
+            <span class="title-font-weight">جنسیت : </span>
+            <span>{{ course['gender'] }}</span>
+          </v-col>
+
+          <v-col>
+            <span class="title-font-weight">زمان و مکان کلاس : </span>
+            <span>{{ course['time_room'] }}</span>
           </v-col>
         </v-row>
       </div>
-
-
     </div>
+
+    <div class="white ma-4 rounded-lg pa-12 body-font title-font-weight">
+      
+      <v-row align="center">
+        <div cols="3">
+          <span>کلاس های همزمان با این درس در بخش</span>
+        </div>
+        <div class="mt-6">
+            <v-autocomplete
+            solo
+            label="یک بخش را انتخاب کنید"
+            v-model="unit"
+            :items="list"
+            hide-no-data
+            hide-selected
+            chips
+            :search-input.sync="searchInput1"
+            @change="searchInput1 = ''"
+            class="ma-2"
+          >
+            <template v-slot:selection="data">
+              <v-chip v-bind="data.attrs" close @click:close="unit = ''">
+                {{ data.item }}
+              </v-chip>
+            </template>
+          </v-autocomplete>
+        </div>
+        </v-row>
+
+      <v-chip v-for="string in courseList" :key="string" class="mx-4">
+        <span class="body-font color-gray"> {{ string }} </span>
+      </v-chip>
+
+      <span>TODO</span>
+    </div>
+
   </div>
 </template>
 
@@ -31,21 +96,22 @@ export default {
     return {
       course : null,
       titles : [
-        ['اسم درس' , 'title'],
-        ['زمان و مکان درس', 'time_room'],
-        ['گروه','group'],
         ['نام استاد','teacher'],
+        ['نام بخش','unit'],
+        ['تاریخ امتحان','final_date'],
+        ['شماره گروه','group'],
+        ['زمان و مکان کلاس', 'time_room'],
         ['جنسیت','gender'],
-        ['تعداد واحد','vahed'],
-        ['بخش','unit'],
-        ['تاریخ امتحان پایان ترم','final_date'],
       ],
+      list : ['بخش کامپیوتر'],
+      searchInput1 : null,
+      courseList : [],
+      unit : null,
     }
   },
 
   beforeMount() {
     let j = json;
-    console.log(this.json);
     for(let unit in j){
       for(let course in j[unit]){
         if(course === this.id){
@@ -60,7 +126,7 @@ export default {
   props: ['id'],
   computed : {
     ...mapFields(['json']),
-  }
+  },
 };
 </script>
 
@@ -68,4 +134,21 @@ export default {
 .title {
   font-weight: bold;
 }
+
+.body-font{
+  font-size: 3vh;
+}
+
+.title-font-weight{
+  font-weight: 600;  
+}
+
+.border{
+  border-color: red;
+}
+
+.color-gray{
+  color: brown;
+}
+
 </style>

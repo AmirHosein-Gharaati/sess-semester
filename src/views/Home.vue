@@ -1,16 +1,16 @@
 <template>
   <div class="home" style="padding: 0.5vw; margin: 1vw 4vw">
     <v-dialog v-model="showAlert" width="400">
-      <v-container class="white text-center" fluid>
-        <v-card class="my-2  white">
-          <v-card-title class="red white--text">
+      <div class="white px-4 py-2" fluid>
+        <v-card class="my-2 white">
+          <div class="red white--text text-center pa-2" style="font-size: 20px">
             <h2>خطا</h2>
-          </v-card-title>
+          </div>
 
           <v-list-item
             v-for="error in errorMessages"
             :key="error"
-            class="blue-grey lighten-4"
+            class="grey lighten-3 pa-2"
           >
             <v-list-item-content>
               {{ error }}
@@ -18,23 +18,23 @@
           </v-list-item>
         </v-card>
 
-        <v-container class="text-center">
-          <v-btn @click="showAlert = false" class="orange lighten-3">
+        <div class="text-center">
+          <v-btn @click="showAlert = false" class="orange lighten-3" style="font-size : 1vw;">
             بستن
           </v-btn>
-        </v-container>
-      </v-container>
+        </div>
+      </div>
     </v-dialog>
 
-    <v-container fluid>
+    <div fluid>
       <v-layout row wrap align-center class="d-none d-lg-flex d-xl-none">
         <v-flex align-self="center" class="text-center white--text ma-2" lg4>
           <h3 class="font-weight-bold">به روز شده در: ۱۴ فروردین ۱۴۰۰</h3>
         </v-flex>
 
         <v-flex align-self="center" lg4 class="ma-2 text-center">
-          <h1 class="white--text" justify="center">برنامه کلاسی نیمسال</h1>
-          <h3 class="orange--text" justify="center">دانشگاه شیراز</h3>
+          <h1 class="white--text" >برنامه کلاسی نیمسال</h1>
+          <h3 class="orange--text">دانشگاه شیراز</h3>
         </v-flex>
 
         <v-flex align-self="center" class="text-center ma-2">
@@ -48,19 +48,19 @@
       <!-- Another layout -->
       <v-layout row wrap align-center class="d-lg-none d-xl-flex">
         <v-flex align-self="center" xs12 class="ma-1 text-center">
-          <h1 class="white--text" justify="center">برنامه کلاسی نیمسال</h1>
-          <h3 class=" orange--text" justify="center">دانشگاه شیراز</h3>
+          <h1 class="white--text" >برنامه کلاسی نیمسال</h1>
+          <h3 class=" orange--text">دانشگاه شیراز</h3>
         </v-flex>
 
         <v-flex align-self="center" class="text-center white--text mt-6" xs12>
           <h4 class="font-weight-bold">به روز شده در: ۱۴ فروردین ۱۴۰۰</h4>
         </v-flex>
       </v-layout>
-    </v-container>
+    </div>
 
     <v-spacer class="mt-6"></v-spacer>
 
-    <div class="white rounded-lg px-6" >
+    <div class="filter-color rounded-lg px-6" >
       <v-row justify="center">
         <h2 class="my-4">فیلتر</h2>
       </v-row>
@@ -186,10 +186,10 @@
 
     <div class="white rounded-lg justify-content-center" fluid>
 
-      <div v-if="results.length !== 0" class="pa-6">
+      <div v-if="results.length !== 0 && results[0] !== -1" class="pa-6">
         <h2 class="text-center my-4">نتایج جستجو</h2>
 
-        <v-layout class="d-none d-lg-flex d-xl-none" align-center>
+        <v-layout class="d-none d-lg-flex d-xl-none" align-center child-flex>
           <v-data-table
           :headers="dataTableHeaders"
           :items="results"
@@ -201,7 +201,7 @@
         </v-data-table>
         </v-layout>
 
-        <v-layout class="d-lg-none d-xl-flex" align-center>
+        <v-layout class="d-lg-none d-xl-flex" align-center child-flex>
           <v-data-table
           :headers="dataTableHeaders2"
           :items="results"
@@ -214,6 +214,12 @@
         </v-layout>
         
       </div>
+      
+      <v-row v-else-if="results[0] === -1" class="ma-2 pa-4" justify="center">
+        <h2 class="text-center">
+          موردی پیدا نشد
+        </h2>
+      </v-row>
 
       <v-row v-else class="ma-2 pa-4" justify="center">
         <h2 class="text-center">
@@ -310,6 +316,9 @@ export default {
           }
         }
       }
+      if(this.results.length === 0){
+        this.results.push(-1);
+      }
     },
     handle(value) {
       this.course = value;
@@ -347,5 +356,9 @@ export default {
 
 .home {
   font-family: "IRANSans";
+}
+
+.filter-color{
+  background-color: #ffffff;
 }
 </style>

@@ -3,7 +3,7 @@ String.prototype.replaceAll = function(search, replacement) {
     return target.replace(new RegExp(search, 'g'), replacement);
 };
 
-export default String.prototype.toPersianCharacter =  function () {
+export default String.prototype.ArabicToPersianCharacter =  function () {
 var string = this;
 var obj = {
     'ك' :'ک',

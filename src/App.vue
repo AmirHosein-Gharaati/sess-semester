@@ -11,6 +11,10 @@ import { mapFields } from "vuex-map-fields";
 import j from "./2903.json";
 import "./assets/css/font.css";
 import './helpers/arabic_to_persian';
+import './helpers/teacher_name';
+import { teacherNameDivider } from './helpers/teacher_name';
+import  { toFarsiNumber} from './helpers/english_to_persian';
+
 
 export default {
   name: "App",
@@ -32,18 +36,22 @@ export default {
           
           Object.keys(this.json[unit][course]).forEach(
             (key) => {
-              this.json[unit][course][key] = this.json[unit][course][key].toPersianCharacter();
+              this.json[unit][course][key] = this.json[unit][course][key].ArabicToPersianCharacter();
             }
           );
 
           this.json[unit][course]['id'] = course;
-
+          this.json[unit][course]['teacher'] = teacherNameDivider(this.json[unit][course]['teacher']);
+          this.json[unit][course]['vahed'] = toFarsiNumber(this.json[unit][course]['vahed']);
+          this.json[unit][course]['group'] = toFarsiNumber(this.json[unit][course]['group']);
+          this.json[unit][course]['time_room'] = toFarsiNumber(this.json[unit][course]['time_room']);
           //course name
           this.filtersItems.course.push(
             this.json[unit][course]["title"]
           );
 
           //teacher name
+          
           this.filtersItems.teachersName.push(
             this.json[unit][course]['teacher']
           );
