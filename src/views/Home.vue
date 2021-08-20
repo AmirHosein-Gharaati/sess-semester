@@ -19,7 +19,11 @@
         </v-card>
 
         <div class="text-center">
-          <v-btn @click="showAlert = false" class="orange lighten-3" style="font-size : 1vw;">
+          <v-btn
+            @click="showAlert = false"
+            class="orange lighten-3"
+            style="font-size: 1vw"
+          >
             بستن
           </v-btn>
         </div>
@@ -33,7 +37,7 @@
         </v-flex>
 
         <v-flex align-self="center" lg4 class="ma-2 text-center">
-          <h1 class="white--text" >برنامه کلاسی نیمسال</h1>
+          <h1 class="white--text">برنامه کلاسی نیمسال</h1>
           <h3 class="orange--text">دانشگاه شیراز</h3>
         </v-flex>
 
@@ -48,8 +52,8 @@
       <!-- Another layout -->
       <v-layout row wrap align-center class="d-lg-none d-xl-flex">
         <v-flex align-self="center" xs12 class="ma-1 text-center">
-          <h1 class="white--text" >برنامه کلاسی نیمسال</h1>
-          <h3 class=" orange--text">دانشگاه شیراز</h3>
+          <h1 class="white--text">برنامه کلاسی نیمسال</h1>
+          <h3 class="orange--text">دانشگاه شیراز</h3>
         </v-flex>
 
         <v-flex align-self="center" class="text-center white--text mt-6" xs12>
@@ -60,7 +64,7 @@
 
     <v-spacer class="mt-6"></v-spacer>
 
-    <div class="filter-color rounded-lg px-6" >
+    <div class="filter-color rounded-lg px-6">
       <v-row justify="center">
         <h2 class="my-4">فیلتر</h2>
       </v-row>
@@ -177,7 +181,7 @@
         <v-col class="text-center">
           <v-btn width="300" x-large class="blue white--text" @click="search">
             <h3>جستجو</h3>
-          </v-btn>
+          </v-btn>     
         </v-col>
       </v-layout>
     </div>
@@ -185,46 +189,104 @@
     <v-spacer class="my-6"></v-spacer>
 
     <div class="white rounded-lg justify-content-center" fluid>
+      <h2 class="text-center my-4" id="search-h">نتایج جستجو</h2>
+      <div
+        v-if="results.length !== 0 && results[0] !== -1"
+        class="pa-6"
+        id="app-back"
+      >
+        <v-card class="class-item ma-5 pa-2">
+          <div
+            v-for="item in selectedList"
+            :key="item.index"
+            class="class-list-card"
+          >
+            <div class="class-item-name-box">
+              <div>
+                <label class="group-name"> {{ item.title }} </label>
+                <label class="class-name">{{ item.group }}</label>
+              </div>
+              <label class="proff-name"> {{ item.teacher }} </label>
+            </div>
+            <div>
+              <v-btn icon>
+                <v-icon @click="snackbar = true">mdi-information</v-icon>
+                <v-snackbar v-model="snackbar" 
+                :multi-line="true"
+                :vertical="true"
+                :top="true"
+                :left="true"
+                color="primary">
 
-      <div v-if="results.length !== 0 && results[0] !== -1" class="pa-6">
-        <h2 class="text-center my-4">نتایج جستجو</h2>
+                 <p>
+                   <span>نام درس: {{item.title}}</span>
+                  <br>
+                  <br>
+                  <span>گروه: {{item.group}}</span>
+                  <br>
+                  <br>
+                  <span>نام استاد: {{item.teacher}}</span>
+                  <br>
+                  <br>
+                  <span>امتحان نهایی: {{item.final_date}}</span>
+                  </p>
+                  
+                  <template v-slot:action="{ attrs }">
+                    <v-btn
+                      color="blue"
+                      text
+                      v-bind="attrs"
+                      @click="snackbar = false"
+                    >
+                      <span class="white--text black pa-2 px-4 rounded-lg">بستن</span>
+                    </v-btn>
+                  </template>
+                </v-snackbar>
+              </v-btn>
+              <v-btn icon>
+                <v-icon @click="removeFromSelected(item.id)"
+                  >mdi-close-circle</v-icon
+                >
+              </v-btn>
+            </div>
+          </div>
+        </v-card>
 
         <v-layout class="d-none d-lg-flex d-xl-none" align-center child-flex>
+          <!-- selected list is local but synced on change with vuex variable -->
+          <!-- added v-model and show-select -->
           <v-data-table
-          :headers="dataTableHeaders"
-          :items="results"
-          class="elevation-1 row-pointer"
-          :items-per-page="results.length"
-          hide-default-footer
-          @click:row="handle"
-        >
-        </v-data-table>
+            v-model="selectedList"
+            show-select
+            item-key="id"
+            :headers="dataTableHeaders"
+            :items="results"
+            class="elevation-1 row-pointer"
+            :items-per-page="results.length"
+            hide-default-footer
+          >
+          </v-data-table>
         </v-layout>
 
         <v-layout class="d-lg-none d-xl-flex" align-center child-flex>
           <v-data-table
-          :headers="dataTableHeaders2"
-          :items="results"
-          class="elevation-1 row-pointer"
-          :items-per-page="results.length"
-          hide-default-footer
-          @click:row="handle"
-        >
-        </v-data-table>
+            :headers="dataTableHeaders2"
+            :items="results"
+            class="elevation-1 row-pointer"
+            :items-per-page="results.length"
+            hide-default-footer
+            show-select
+          >
+          </v-data-table>
         </v-layout>
-        
       </div>
-      
+
       <v-row v-else-if="results[0] === -1" class="ma-2 pa-4" justify="center">
-        <h2 class="text-center">
-          موردی پیدا نشد
-        </h2>
+        <h2 class="text-center">موردی پیدا نشد</h2>
       </v-row>
 
       <v-row v-else class="ma-2 pa-4" justify="center">
-        <h2 class="text-center">
-          برای نمایش نتایج، فیلتر ها را پر کنید
-        </h2>
+        <h2 class="text-center">برای نمایش نتایج، فیلتر ها را پر کنید</h2>
       </v-row>
     </div>
   </div>
@@ -238,34 +300,46 @@ export default {
   name: "Home",
   data() {
     return {
+      snackbar: null,
       searchInput1: "",
       searchInput2: "",
       searchInput3: "",
       searchInput4: "",
       showAlert: false,
+
       errorMessages: [],
+
       rules: [(value) => !!value || "نیمسال تحصیلی باید انتخاب شود."],
+
       dataTableHeaders: [
         { text: "درس", value: "title" },
         { text: "استاد", value: "teacher" },
         { text: "گروه", value: "group" },
         { text: "واحد", value: "vahed" },
-        { text: "زمان و مکان کلاس", value: "time_room" }
+        { text: "زمان و مکان کلاس", value: "time_room" },
       ],
-      dataTableHeaders2 : [
+
+      dataTableHeaders2: [
         { text: "درس", value: "title" },
         { text: "استاد", value: "teacher" },
         { text: "گروه", value: "group" },
         { text: "واحد", value: "vahed" },
-      ]
+      ],
+      selectedList: [],
     };
   },
+
   created() {
     this.filters.semester = this.getFilterItems.semesters[0];
   },
-  mounted(){
-  },
+  mounted() {},
   methods: {
+    removeFromSelected: function (id) {
+      this.selectedList = this.selectedList.pop((item) => item.id !== id);
+    },
+    // logtest() {
+    //   console.log("selected", this.selectedList);
+    // },
     search() {
       let flag = 0;
       this.errorMessages = [];
@@ -281,9 +355,7 @@ export default {
           this.filters.teacherName.length
         )
       ) {
-        this.errorMessages.push(
-          "حداقل یکی از موارد بخش، درس یا نام استاد باید انتخاب شود."
-        );
+        this.errorMessages.push("حداقل یکی از موارد بخش، درس یا نام استاد باید انتخاب شود.");
         flag = 1;
       }
       if (flag) {
@@ -293,7 +365,7 @@ export default {
 
       this.results = [];
       //TODO
-      
+
       for (let unit in this.json) {
         if (
           this.filters.unit.length === 0 ||
@@ -306,9 +378,7 @@ export default {
             ) {
               if (
                 this.filters.teacherName.length === 0 ||
-                this.filters.teacherName.includes(
-                  this.json[unit][course]["teacher"]
-                )
+                this.filters.teacherName.includes(this.json[unit][course]["teacher"])
               ) {
                 this.results.push(this.json[unit][course]);
               }
@@ -316,13 +386,9 @@ export default {
           }
         }
       }
-      if(this.results.length === 0){
+      if (this.results.length === 0) {
         this.results.push(-1);
       }
-    },
-    handle(value) {
-      this.course = value;
-      this.$router.push({ name: "Course", params: { id: value.id} });
     },
     remove(item) {
       if (item.parent.label.includes("بخش")) {
@@ -344,6 +410,7 @@ export default {
       "getCourses",
       "getTeachers",
       "getFilterItems",
+      "getSele",
     ]),
   },
 };
@@ -358,7 +425,35 @@ export default {
   font-family: "IRANSans";
 }
 
-.filter-color{
+.filter-color {
   background-color: #ffffff;
 }
+#app-back {
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  flex-direction: row;
+}
+
+#search-h {
+  margin-top: 50px;
+}
+
+.class-list-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-direction: row;
+
+  min-width: 250px;
+  padding: 7px;
+  margin-top: 5px;
+
+  background-color: #c0dbe4;
+  border-radius: 4px;
+  font-size: 11px;
+  box-shadow: 3px 3px 6px #d9d9d9, -3px -3px 6px #ffffff;
+}
 </style>
+
+
