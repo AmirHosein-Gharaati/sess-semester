@@ -194,47 +194,41 @@
         class="pa-6"
       >
         <h2 class="text-center my-4" id="search-h">نتایج جستجو</h2>
-        <v-container
-            class="px-5"
-            fluid
-          >
-          <v-row>
-            <v-checkbox
-              v-if="!mobileDevice"
-              v-model="calenderCheckbox"
-              label="نمایش تقویم"
-              class="px-5 mobile-expanded"
-            ></v-checkbox>
-            
-          </v-row>
-        </v-container>
 
         <!-- Calendar -->
-        <template>
-          <div dir="ltr">
-            <v-sheet
-              tile
-              height="10"
-              class="d-flex"
-            >
-            </v-sheet>
-            <v-sheet v-if="calenderCheckbox && !mobileDevice" height="800" class="ma-2 rounded-lg">
-              <v-calendar
-                ref="calendar"
-                v-model="value"
-                :weekdays="weekday"
-                :type="type"
-                :events="events"
-                :first-interval= 6
-                :interval-count= 16
-                :event-overlap-mode="mode"
-                :event-overlap-threshold="30"
-                :event-color="getEventColor"
-              ></v-calendar>
-            </v-sheet>
+        <div class="calenderShower">
+          <v-icon
+            large
+            @click="taggleCalender"
+            :class="calenderOpen?'calnderCloseIcon':''"
+          >
+            mdi-chevron-down
+          </v-icon>
+          <span style="margin:auto 1rem auto 2rem">نمایش تقویم</span>
+          <div class="calenderHolder">
+            <template>
+              <div dir="ltr">
+                
+                <v-sheet v-if="calenderOpen && !mobileDevice" height="800" class="ma-2 rounded-lg">
+                  <v-calendar
+                    ref="calendar"
+                    v-model="value"
+                    :weekdays="weekday"
+                    :type="type"
+                    :events="events"
+                    :first-interval= 6
+                    :interval-count= 16
+                    :event-overlap-mode="mode"
+                    :event-overlap-threshold="30"
+                    :event-color="getEventColor"
+                  ></v-calendar>
+                </v-sheet>
+              </div>
+            </template>
           </div>
-        </template>
-        <v-spacer class="ma-16"></v-spacer>
+        </div>
+
+        <v-spacer class="ma-5"></v-spacer>
         <div 
           id="app-back"
         >
@@ -458,7 +452,7 @@ export default {
 
       mobileDevice:window.innerWidth<780,
 
-      calenderCheckbox: false,
+      calenderOpen:false,
       // Start calender
       type: 'week',
       mode: 'stack',
@@ -608,6 +602,9 @@ export default {
     // End calender
   },
   methods: {
+    taggleCalender(){
+      this.calenderOpen = !this.calenderOpen
+    },
     getEventColor (event) {
       return event.color
     },
@@ -724,6 +721,15 @@ export default {
 }
 .screen-expanded{
   font-size:medium;  
+}
+.calenderShower{
+  width:100%;
+  background:#ddd5;
+  padding:1rem 1rem;
+  border-radius: .4rem;
+}
+.calnderCloseIcon{
+  transform: rotate(-180deg);
 }
 
 #app-back {
