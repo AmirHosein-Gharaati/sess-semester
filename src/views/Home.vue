@@ -669,11 +669,11 @@ export default {
     },
     remove(item) {
       if (item.parent.label.includes("بخش")) {
-        this.filters.unit.pop(item.data);
+        this.filters.unit.splice(this.filters.unit.indexOf(item.item), 1);
       } else if (item.parent.label.includes("درس")) {
-        this.filters.course.pop(item.data);
+        this.filters.course.splice(this.filters.course.indexOf(item.item), 1);
       } else if (item.parent.label.includes("نام استاد")) {
-        this.filters.teacherName.pop(item.data);
+        this.filters.teacherName.splice(this.filters.teacherName.indexOf(item.item), 1);
       } else if (item.parent.label.includes("نیمسال تحصیلی")) {
         this.filters.semester = "";
       }
