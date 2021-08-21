@@ -441,6 +441,7 @@
 <script>
 import { mapFields } from "vuex-map-fields";
 import { mapGetters } from "vuex";
+import { convertPersianNumToEng } from "../helpers/persianNumber_To_English";
 
 export default {
   name: "Home",
@@ -540,19 +541,8 @@ export default {
           "جمعه",
           "شنبه",
         ]
-        convertDayName;
-        function convertPersianNumToEng(number){
-          const persianNumDifference = "۱".charCodeAt()-"1".charCodeAt();
-          let res=0
-          for(let i=0; i<number.length;i++){
-            res*=10
-            res += ((number[i].charCodeAt() - persianNumDifference)-"0".charCodeAt());
-          }
-          return res;
-        }
         
         let copyOfResult = this.selectedList;
-        // console.log("res", this.copyOfResult);
         let classesToShowOnCalender =[]
 
         for(let i=0; i<copyOfResult.length;i++){
@@ -595,7 +585,6 @@ export default {
             timed: 1,
           })
         }
-        // console.log(events)
         this.events = events
       },
       
@@ -617,8 +606,6 @@ export default {
       this.dialogContent.time_room = item.time_room;
     },
     removeFromSelected: function (id) {
-      // console.log("in remove   ",this.selectedList)
-      // console.log("in remove",id)
       for(let i=0;i<this.selectedList.length;i++){
         if (this.selectedList[i].id==id){
           this.selectedList.splice(i, 1);
