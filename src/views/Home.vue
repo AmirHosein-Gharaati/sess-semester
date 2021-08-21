@@ -208,6 +208,8 @@
             
           </v-row>
         </v-container>
+
+        <!-- Calendar -->
         <template>
           <div dir="ltr">
             <v-sheet
@@ -232,11 +234,46 @@
             </v-sheet>
           </div>
         </template>
-
+        <v-spacer class="ma-16"></v-spacer>
         <div 
           id="app-back"
         >
           <div v-if="selectedList.length && !mobileDevice">
+            <h3 class="text-center">دروس انتخاب شده</h3>
+            <v-dialog
+              v-model="dialog"
+              width="500"
+            >
+              <v-card>
+                <v-card-title class="text-h5 grey lighten-2">
+                  {{dialogContent.title}}
+                </v-card-title>
+
+                <v-card-text class="mt-4">
+                  <span style="font-weight: bold;">نام استاد: </span>{{dialogContent.teacher}}
+                  <br>
+                  <br>
+                  <span style="font-weight: bold;">گروه: </span>{{dialogContent.group}}
+                  <br>
+                  <br>
+                  <span style="font-weight: bold;">امتحان نهایی: </span>{{dialogContent.final_date}}
+                  <br>
+                  <br>
+                  <span style="font-weight: bold;">زمان و مکان کلاس: </span>{{dialogContent.time_room}}
+                </v-card-text>
+                <v-divider></v-divider>
+                <v-card-actions>
+                  <v-spacer></v-spacer>
+                  <v-btn
+                    color="primary"
+                    text
+                    @click="dialog = false"
+                  >
+                    بستن
+                  </v-btn>
+                </v-card-actions>
+              </v-card>
+            </v-dialog>
             <v-card 
               class="class-item ma-5 pa-2">
               <div
@@ -253,38 +290,7 @@
                 </div>
                 <div>
                   <v-btn icon>
-                    <v-icon @click="snackbar = true">mdi-information</v-icon>
-                    <v-snackbar v-model="snackbar" 
-                    :multi-line="true"
-                    :vertical="true"
-                    :top="true"
-                    :left="true"
-                    color="primary">
-
-                      <p>
-                        <span>نام درس: {{item.title}}</span>
-                        <br>
-                        <br>
-                        <span>گروه: {{item.group}}</span>
-                        <br>
-                        <br>
-                        <span>نام استاد: {{item.teacher}}</span>
-                        <br>
-                        <br>
-                        <span>امتحان نهایی: {{item.final_date}}</span>
-                      </p>
-                      
-                      <template v-slot:action="{ attrs }">
-                        <v-btn
-                          color="blue"
-                          text
-                          v-bind="attrs"
-                          @click="snackbar = false"
-                        >
-                          <span class="white--text black pa-2 px-4 rounded-lg">بستن</span>
-                        </v-btn>
-                      </template>
-                    </v-snackbar>
+                    <v-icon @click="setDialogContent(item)">mdi-information</v-icon>
                   </v-btn>
                   <v-btn icon>
                     <v-icon @click="removeFromSelected(item.id)"
@@ -448,7 +454,7 @@ export default {
     return {
       page: 1,
       pageCount: 0,
-      itemsPerPage: 15,
+      itemsPerPage: 12,
 
       mobileDevice:window.innerWidth<780,
 
@@ -488,7 +494,15 @@ export default {
         ],
       // End calender
       expanded: [],
-      snackbar: null,
+      // snackbar: null,
+      dialog: false,
+      dialogContent :{
+        title: null,
+        teacher: null,
+        group: null,
+        final_date: null,
+        time_room: null
+      },
       searchInput1: "",
       searchInput2: "",
       searchInput3: "",
@@ -544,7 +558,7 @@ export default {
         }
         
         let copyOfResult = this.selectedList;
-        console.log("res", this.copyOfResult);
+        // console.log("res", this.copyOfResult);
         let classesToShowOnCalender =[]
 
         for(let i=0; i<copyOfResult.length;i++){
@@ -587,7 +601,7 @@ export default {
             timed: 1,
           })
         }
-        console.log(events)
+        // console.log(events)
         this.events = events
       },
       
@@ -597,9 +611,17 @@ export default {
     getEventColor (event) {
       return event.color
     },
+    setDialogContent(item){
+      this.dialog = true;
+      this.dialogContent.title = item.title;
+      this.dialogContent.teacher = item.teacher;
+      this.dialogContent.group = item.group;
+      this.dialogContent.final_date = item.final_date;
+      this.dialogContent.time_room = item.time_room;
+    },
     removeFromSelected: function (id) {
-      console.log("in remove   ",this.selectedList)
-      console.log("in remove",id)
+      // console.log("in remove   ",this.selectedList)
+      // console.log("in remove",id)
       for(let i=0;i<this.selectedList.length;i++){
         if (this.selectedList[i].id==id){
           this.selectedList.splice(i, 1);
@@ -635,7 +657,6 @@ export default {
       }
 
       this.results = [];
-      //TODO
 
       for (let unit in this.json) {
         if (
@@ -689,9 +710,6 @@ export default {
 </script>
 
 <style scoped>
-.row-pointer >>> tbody tr :hover {
-  cursor: pointer;
-}
 
 .home {
   font-family: 'Vazir', sans-serif;
