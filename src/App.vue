@@ -66,5 +66,13 @@ export default {
 #app {
   background: url("./assets/background.jpg") no-repeat center center fixed !important;
   background-size: cover;
+  font-family: 'Vazir', sans-serif;
+
 }
+.v-list-item .v-list-item__title, .v-list-item .v-list-item__subtitle {
+  line-height: 1.1;
+  font-size:small;
+  font-family: 'Vazir', sans-serif;
+}
+
 </style>

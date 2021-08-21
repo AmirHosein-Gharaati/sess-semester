@@ -22,7 +22,7 @@
           <v-btn
             @click="showAlert = false"
             class="orange lighten-3"
-            style="font-size: 1vw"
+            style="font-size: 1rem"
           >
             بستن
           </v-btn>
@@ -179,7 +179,7 @@
           </v-autocomplete>
         </v-flex>
         <v-col class="text-center">
-          <v-btn width="300" x-large class="blue white--text" @click="search">
+          <v-btn width="250" x-large class="blue white--text" @click="search">
             <h3>جستجو</h3>
           </v-btn>     
         </v-col>
@@ -189,102 +189,248 @@
     <v-spacer class="my-6"></v-spacer>
 
     <div class="white rounded-lg justify-content-center" fluid>
-      <h2 class="text-center my-4" id="search-h">نتایج جستجو</h2>
       <div
         v-if="results.length !== 0 && results[0] !== -1"
         class="pa-6"
-        id="app-back"
       >
-        <v-card class="class-item ma-5 pa-2">
-          <div
-            v-for="item in selectedList"
-            :key="item.index"
-            class="class-list-card"
+        <h2 class="text-center my-4" id="search-h">نتایج جستجو</h2>
+        <v-container
+            class="px-5"
+            fluid
           >
-            <div class="class-item-name-box">
-              <div>
-                <label class="group-name"> {{ item.title }} </label>
-                <label class="class-name">{{ item.group }}</label>
-              </div>
-              <label class="proff-name"> {{ item.teacher }} </label>
-            </div>
-            <div>
-              <v-btn icon>
-                <v-icon @click="snackbar = true">mdi-information</v-icon>
-                <v-snackbar v-model="snackbar" 
-                :multi-line="true"
-                :vertical="true"
-                :top="true"
-                :left="true"
-                color="primary">
-
-                 <p>
-                   <span>نام درس: {{item.title}}</span>
-                  <br>
-                  <br>
-                  <span>گروه: {{item.group}}</span>
-                  <br>
-                  <br>
-                  <span>نام استاد: {{item.teacher}}</span>
-                  <br>
-                  <br>
-                  <span>امتحان نهایی: {{item.final_date}}</span>
-                  </p>
-                  
-                  <template v-slot:action="{ attrs }">
-                    <v-btn
-                      color="blue"
-                      text
-                      v-bind="attrs"
-                      @click="snackbar = false"
-                    >
-                      <span class="white--text black pa-2 px-4 rounded-lg">بستن</span>
-                    </v-btn>
-                  </template>
-                </v-snackbar>
-              </v-btn>
-              <v-btn icon>
-                <v-icon @click="removeFromSelected(item.id)"
-                  >mdi-close-circle</v-icon
-                >
-              </v-btn>
-            </div>
+          <v-row>
+            <v-checkbox
+              v-if="!mobileDevice"
+              v-model="calenderCheckbox"
+              label="نمایش تقویم"
+              class="px-5 mobile-expanded"
+            ></v-checkbox>
+            
+          </v-row>
+        </v-container>
+        <template>
+          <div dir="ltr">
+            <v-sheet
+              tile
+              height="10"
+              class="d-flex"
+            >
+            </v-sheet>
+            <v-sheet v-if="calenderCheckbox && !mobileDevice" height="800" class="ma-2 rounded-lg">
+              <v-calendar
+                ref="calendar"
+                v-model="value"
+                :weekdays="weekday"
+                :type="type"
+                :events="events"
+                :first-interval= 6
+                :interval-count= 16
+                :event-overlap-mode="mode"
+                :event-overlap-threshold="30"
+                :event-color="getEventColor"
+              ></v-calendar>
+            </v-sheet>
           </div>
-        </v-card>
+        </template>
 
-        <v-layout class="d-none d-lg-flex d-xl-none" align-center child-flex>
-          <!-- selected list is local but synced on change with vuex variable -->
-          <!-- added v-model and show-select -->
-          <v-data-table
-            v-model="selectedList"
-            show-select
-            item-key="id"
-            :headers="dataTableHeaders"
-            :items="results"
-            class="elevation-1 row-pointer"
-            :items-per-page="results.length"
-            hide-default-footer
-          >
-          </v-data-table>
-        </v-layout>
+        <div 
+          id="app-back"
+        >
+          <div v-if="selectedList.length && !mobileDevice">
+            <v-card 
+              class="class-item ma-5 pa-2">
+              <div
+                v-for="item in selectedList"
+                :key="item.index"
+                class="class-list-card"
+              >
+                <div class="class-item-name-box">
+                  <div>
+                    <label class="group-name"> {{ item.title }} </label>
+                    <label class="class-name">{{ item.group }}</label>
+                  </div>
+                  <label class="proff-name"> {{ item.teacher }} </label>
+                </div>
+                <div>
+                  <v-btn icon>
+                    <v-icon @click="snackbar = true">mdi-information</v-icon>
+                    <v-snackbar v-model="snackbar" 
+                    :multi-line="true"
+                    :vertical="true"
+                    :top="true"
+                    :left="true"
+                    color="primary">
 
-        <v-layout class="d-lg-none d-xl-flex" align-center child-flex>
-          <v-data-table
+                      <p>
+                        <span>نام درس: {{item.title}}</span>
+                        <br>
+                        <br>
+                        <span>گروه: {{item.group}}</span>
+                        <br>
+                        <br>
+                        <span>نام استاد: {{item.teacher}}</span>
+                        <br>
+                        <br>
+                        <span>امتحان نهایی: {{item.final_date}}</span>
+                      </p>
+                      
+                      <template v-slot:action="{ attrs }">
+                        <v-btn
+                          color="blue"
+                          text
+                          v-bind="attrs"
+                          @click="snackbar = false"
+                        >
+                          <span class="white--text black pa-2 px-4 rounded-lg">بستن</span>
+                        </v-btn>
+                      </template>
+                    </v-snackbar>
+                  </v-btn>
+                  <v-btn icon>
+                    <v-icon @click="removeFromSelected(item.id)"
+                      >mdi-close-circle</v-icon
+                    >
+                  </v-btn>
+                </div>
+              </div>
+            </v-card>
+          </div>
+
+          <v-layout class="d-none d-lg-flex d-xl-none" align-center child-flex>
+            <!-- selected list is local but synced on change with vuex variable -->
+            <!-- added v-model and show-select -->
+            <v-data-table
+              :headers="dataTableHeaders"
+              :items="results"
+              class="elevation-1 row-pointer"
+              v-model="selectedList"  
+              show-select
+              hide-default-footer
+              item-key="id"
+              show-expand
+              :expanded.sync="expanded"
+              :page.sync="page"
+              :items-per-page="itemsPerPage"
+              @page-count="pageCount = $event"
+              >
+                <template v-slot:expanded-item="{ headers, item }">
+                <td :colspan="headers.length">
+                  <div class="white ma-4 rounded-lg pa-5">
+                    <v-row>
+                      <h2>{{ item['title'] }} | {{ item['vahed'] }} واحد</h2>
+                    </v-row>
+                    
+                    <div class="body-font mt-8">
+                      <v-row>
+                        <v-col class="screen-expanded">
+                          <span  class="title-font-weight">نام استاد : </span>
+                          <span >{{ item['teacher'] }}</span>
+
+                        </v-col>
+                        <v-col class="screen-expanded">
+                          <span  class="title-font-weight">نام بخش : </span>
+                          <span>{{ item['unit'] }}</span>
+                        </v-col>
+
+                        <v-col class="screen-expanded">
+                          <span class="title-font-weight">تاریخ امتحان : </span>
+                          <span>{{ item['final_date'] }}</span>
+                        </v-col>
+                      </v-row>
+
+                      <v-row>
+                        <v-col class="screen-expanded">
+                          <span class="title-font-weight">شماره گروه : </span>
+                          <span>{{ item['group'] }}</span>
+                        </v-col>
+
+                        <v-col class="screen-expanded">
+                          <span class="title-font-weight">جنسیت : </span>
+                          <span>{{ item['gender'] }}</span>
+                        </v-col>
+
+                        <v-col class="screen-expanded">
+                          <span class="title-font-weight">زمان و مکان کلاس : </span>
+                          <span>{{ item['time_room'] }}</span>
+                        </v-col>
+                      </v-row>
+                    </div>
+                  </div>
+                </td>
+              </template>
+            </v-data-table>
+          </v-layout>
+
+          <v-layout class="d-lg-none d-xl-flex" align-center child-flex>
+            <v-data-table
             :headers="dataTableHeaders2"
             :items="results"
             class="elevation-1 row-pointer"
-            :items-per-page="results.length"
             hide-default-footer
-            show-select
-          >
-          </v-data-table>
-        </v-layout>
+            show-expand
+            :expanded.sync="expanded"
+            :page.sync="page"
+            :items-per-page="itemsPerPage"
+            @page-count="pageCount = $event"
+            >
+              <template v-slot:expanded-item="{ headers, item }">
+                <td :colspan="headers.length">
+                  <div class="white ma-4 rounded-lg pa-4">
+                    <v-row>
+                      <h4 class="mobile-expanded-title">{{ item['title'] }} | {{ item['vahed'] }} واحد</h4>
+                    </v-row>
+                    
+                    <div class="body-font mt-8">
+                        <v-col class="mobile-expanded">
+                          <span class="">نام استاد : </span>
+                          <span >{{ item['teacher'] }}</span>
+                        </v-col>
+
+                        <v-col class="mobile-expanded">
+                          <span class="">نام بخش : </span>
+                          <span>{{ item['unit'] }}</span>
+                        </v-col>
+
+                        <v-col class="mobile-expanded">
+                          <span class="">تاریخ امتحان : </span>
+                          <span>{{ item['final_date'] }}</span>
+                        </v-col>
+
+                        <v-col class="mobile-expanded">
+                          <span class="">شماره گروه : </span>
+                          <span>{{ item['group'] }}</span>
+                        </v-col>
+
+                        <v-col class="mobile-expanded">
+                          <span class="">جنسیت : </span>
+                          <span>{{ item['gender'] }}</span>
+                        </v-col>
+
+                        <v-col class="mobile-expanded">
+                          <span class="">زمان و مکان کلاس : </span>
+                          <span>{{ item['time_room'] }}</span>
+                        </v-col>
+                    </div>
+                  </div>
+                </td>
+              </template>
+            </v-data-table>
+          </v-layout>
+        
+        </div>
+
+        <div class="text-center pt-2">
+          <v-pagination
+            v-model="page"
+            :length="pageCount"
+          ></v-pagination>
+        </div>
+
+        <v-row v-if="results[0] === -1" class="ma-2 pa-4" justify="center">
+          <h2 class="text-center">موردی پیدا نشد</h2>
+        </v-row>
+
       </div>
-
-      <v-row v-else-if="results[0] === -1" class="ma-2 pa-4" justify="center">
-        <h2 class="text-center">موردی پیدا نشد</h2>
-      </v-row>
-
       <v-row v-else class="ma-2 pa-4" justify="center">
         <h2 class="text-center">برای نمایش نتایج، فیلتر ها را پر کنید</h2>
       </v-row>
@@ -300,6 +446,48 @@ export default {
   name: "Home",
   data() {
     return {
+      page: 1,
+      pageCount: 0,
+      itemsPerPage: 15,
+
+      mobileDevice:window.innerWidth<780,
+
+      calenderCheckbox: false,
+      // Start calender
+      type: 'week',
+      mode: 'stack',
+      modes: ['stack', 'column'],
+      weekday: [6, 0, 1, 2, 3, 4, 5],
+      weekdays: [
+        { text: 'Sun - Sat', value: [ 1, 2, 3, 4, 5, 6, 0] },
+      
+      ],
+      value: '',
+      events: [],
+      colors: [
+        "#ff1e56",
+        "#ffe227",
+        "#43dde6",
+        "#52d681",
+        "#015668",
+        "#f25287",
+        "#f5841a",
+        "#00af91",
+        "#930077",
+        "#203e5f",
+        "#e79cc2",
+        "#f9b248",
+        "#65589c",
+        "#313131",
+        "#78c4d4",
+        "#007965",
+        "#52575d",
+        "#fc3a52",
+        "#a97555",
+        "#a1de93",
+        ],
+      // End calender
+      expanded: [],
       snackbar: null,
       searchInput1: "",
       searchInput2: "",
@@ -333,13 +521,96 @@ export default {
     this.filters.semester = this.getFilterItems.semesters[0];
   },
   mounted() {},
+  watch: {
+    selectedList: function getEvents () {
+        const convertDayName =[
+          "یکشنبه",
+          "دوشنبه",
+          "سهشنبه",
+          "چهارشنبه",
+          "پنجشنبه",
+          "جمعه",
+          "شنبه",
+        ]
+        convertDayName;
+        function convertPersianNumToEng(number){
+          const persianNumDifference = "۱".charCodeAt()-"1".charCodeAt();
+          let res=0
+          for(let i=0; i<number.length;i++){
+            res*=10
+            res += ((number[i].charCodeAt() - persianNumDifference)-"0".charCodeAt());
+          }
+          return res;
+        }
+        
+        let copyOfResult = this.selectedList;
+        console.log("res", this.copyOfResult);
+        let classesToShowOnCalender =[]
+
+        for(let i=0; i<copyOfResult.length;i++){
+          let courseName = copyOfResult[i].title;
+          let justDateAndTime = copyOfResult[i].time_room.replaceAll(" ","").replaceAll("\n","").replaceAll(/\(.*?\)/, " ").split(" ").slice(0,-1)
+          for (let j = 0; j < justDateAndTime.length; j++) {//1 or 2 or 3
+            let listOfEachCourseDatesAndTimes = justDateAndTime[j].split("-");
+            let seperatedTimes = listOfEachCourseDatesAndTimes[1].split(":");
+            listOfEachCourseDatesAndTimes[1];
+            classesToShowOnCalender.push({hourStart:convertPersianNumToEng(seperatedTimes[0]), minuteStart:convertPersianNumToEng(seperatedTimes[1]), hourEnd:convertPersianNumToEng(seperatedTimes[2]), minuteEnd:convertPersianNumToEng(seperatedTimes[3]) ,weekDay:listOfEachCourseDatesAndTimes[0],title:courseName, color:this.colors[i%this.colors.length]})
+          }
+        }
+        const events = []
+        const today = new Date()
+        today.setDate(today.getDate());
+        for (let i = 0; i < classesToShowOnCalender.length; i++) {
+
+          let differenceToToDay = (convertDayName.indexOf(classesToShowOnCalender[i].weekDay))-(today.getDay());
+          if(today.getDay()==6){
+            differenceToToDay = differenceToToDay< 0 ?differenceToToDay+7:differenceToToDay  
+          }else{
+            differenceToToDay = differenceToToDay<-today.getDay()-1?differenceToToDay+5-today.getDay():differenceToToDay>5-today.getDay()?differenceToToDay-7:differenceToToDay
+          }
+          let thisDateStart = new Date()
+          let thisDateEnd = new Date()
+          thisDateStart.setDate(today.getDate() + differenceToToDay);
+          thisDateStart.setHours(classesToShowOnCalender[i].hourStart)
+          thisDateStart.setMinutes(classesToShowOnCalender[i].minuteStart)
+          thisDateStart.setSeconds(0)
+          thisDateEnd.setDate(today.getDate() + differenceToToDay);
+          thisDateEnd.setHours(classesToShowOnCalender[i].hourEnd)
+          thisDateEnd.setMinutes(classesToShowOnCalender[i].minuteEnd)
+          thisDateEnd.setSeconds(0)
+
+          events.push({
+            name: classesToShowOnCalender[i].title,
+            start: thisDateStart,
+            end: thisDateEnd,
+            color:classesToShowOnCalender[i].color,
+            timed: 1,
+          })
+        }
+        console.log(events)
+        this.events = events
+      },
+      
+    // End calender
+  },
   methods: {
-    removeFromSelected: function (id) {
-      this.selectedList = this.selectedList.pop((item) => item.id !== id);
+    getEventColor (event) {
+      return event.color
     },
-    // logtest() {
-    //   console.log("selected", this.selectedList);
-    // },
+    removeFromSelected: function (id) {
+      console.log("in remove   ",this.selectedList)
+      console.log("in remove",id)
+      for(let i=0;i<this.selectedList.length;i++){
+        if (this.selectedList[i].id==id){
+          this.selectedList.splice(i, 1);
+          break
+        }
+      }
+      // this.selectedList = this.selectedList.pop((item) => item.id !== id);
+    },
+    logtest() {
+      console.log("selected", this.selectedList);
+    },
     search() {
       let flag = 0;
       this.errorMessages = [];
@@ -389,6 +660,7 @@ export default {
       if (this.results.length === 0) {
         this.results.push(-1);
       }
+      // this.getEvents()
     },
     remove(item) {
       if (item.parent.label.includes("بخش")) {
@@ -422,12 +694,20 @@ export default {
 }
 
 .home {
-  font-family: "IRANSans";
+  font-family: 'Vazir', sans-serif;
 }
 
 .filter-color {
   background-color: #ffffff;
 }
+
+.mobile-expanded{
+  font-size:small;  
+}
+.screen-expanded{
+  font-size:medium;  
+}
+
 #app-back {
   display: flex;
   justify-content: space-evenly;
