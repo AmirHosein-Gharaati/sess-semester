@@ -64,8 +64,6 @@ export default {
 
 <style>
 #app {
-  background: url("./assets/background.jpg") no-repeat center center fixed;
-  background-size: cover;
   font-family: 'Vazir', sans-serif;
 
 }
@@ -73,6 +71,40 @@ export default {
   line-height: 1.1;
   font-size:small;
   font-family: 'Vazir', sans-serif;
+}
+.v-tab {
+  min-width: 40px!important;
+  letter-spacing:0rem!important;
+}
+.v-slide-group__prev{
+  display: none !important;
+}
+.v-slide-group__next{
+  display: none !important;
+}
+
+::-webkit-scrollbar {
+  width: 9px;
+}
+
+::-webkit-scrollbar-track {
+  background: #e6e6e600;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #b0b0b099;
+  border-radius: 0px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #b0b0b0dd;
+  transition: background .5s;
+}
+
+@media screen and (max-width: 768px) {
+  ::-webkit-scrollbar {
+    width: 0px;
+  }
 }
 
 </style>
