@@ -296,9 +296,7 @@
             </v-card>
           </div>
 
-          <v-layout class="d-none d-lg-flex d-xl-none" align-center child-flex>
-            <!-- selected list is local but synced on change with vuex variable -->
-            <!-- added v-model and show-select -->
+          <v-layout class="d-none d-lg-flex" align-center child-flex>
             <v-data-table
               :headers="dataTableHeaders"
               :items="results"
@@ -606,13 +604,7 @@ export default {
       this.dialogContent.time_room = item.time_room;
     },
     removeFromSelected: function (id) {
-      for(let i=0;i<this.selectedList.length;i++){
-        if (this.selectedList[i].id==id){
-          this.selectedList.splice(i, 1);
-          break
-        }
-      }
-      // this.selectedList = this.selectedList.pop((item) => item.id !== id);
+      this.selectedList = this.selectedList.filter((item) => item.id !== id);
     },
     logtest() {
       console.log("selected", this.selectedList);

@@ -64,7 +64,7 @@ export default {
 
 <style>
 #app {
-  background: url("./assets/background.jpg") no-repeat center center fixed !important;
+  background: url("./assets/background.jpg") no-repeat center center fixed;
   background-size: cover;
   font-family: 'Vazir', sans-serif;
 
