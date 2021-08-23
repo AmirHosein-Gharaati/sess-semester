@@ -334,7 +334,7 @@
                 </v-data-table>
               </v-layout>
 
-              <v-layout class="d-lg-none d-xl-flex" align-center child-flex>
+              <v-layout class="d-lg-none" align-center child-flex>
                 <v-data-table
                 :headers="dataTableHeaders2"
                 :items="results"
@@ -398,7 +398,7 @@
               ></v-pagination>
             </div>
 
-            <v-spacer class="ma-5"></v-spacer>
+            <v-spacer class="my-10"><hr></v-spacer>
             <!-- Calendar -->
             <div class="calenderShower">
               <v-icon
