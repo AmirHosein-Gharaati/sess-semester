@@ -500,7 +500,6 @@ export default {
         ],
       // End calender
       expanded: [],
-      // snackbar: null,
       dialog: false,
       dialogContent :{
         title: null,
@@ -542,7 +541,7 @@ export default {
   mounted() {},
   watch: {
     selectedList: function getEvents () {
-      console.log("................")
+      // console.log("................")
         const convertDayName =[
           "یکشنبه",
           "دوشنبه",

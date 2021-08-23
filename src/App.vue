@@ -30,28 +30,24 @@ export default {
 
     //initializing filters for search
       for (let unit in this.json) {
-
-        this.filtersItems.units.push(unit);
+        
         for(let course in this.json[unit]){
-          // Object.keys(this.json[unit][course]).forEach(
-          //   (key) => {
-          //     if(typeof(key) == typeof(String))
-          //       this.json[unit][course][key] = this.json[unit][course][key].ArabicToPersianCharacter();
-          //   }
-          // );
 
           this.json[unit][course]['id'] = course;
           this.json[unit][course]['teacher'] = teacherNameDivider(this.json[unit][course]['teacher']);
           this.json[unit][course]['vahed'] = toFarsiNumber(this.json[unit][course]['vahed']);
           this.json[unit][course]['group'] = toFarsiNumber(this.json[unit][course]['group']);
           this.json[unit][course]['time_room'] = toFarsiNumber(this.json[unit][course]['time_room']);
+
+          //unit name
+          this.filtersItems.units.push(unit);
+          
           //course name
           this.filtersItems.course.push(
             this.json[unit][course]["title"]
           );
 
           //teacher name
-          
           this.filtersItems.teachersName.push(
             this.json[unit][course]['teacher']
           );
