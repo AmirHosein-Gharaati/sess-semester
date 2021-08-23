@@ -450,7 +450,7 @@
 <script>
 import { mapFields } from "vuex-map-fields";
 import { mapGetters } from "vuex";
-import { convertPersianNumToEng } from "../helpers/persianNumber_To_English";
+// import { convertPersianNumToEng } from "../helpers/persianNumber_To_English";
 export default {
   name: "Home",
   data() {
@@ -542,6 +542,7 @@ export default {
   mounted() {},
   watch: {
     selectedList: function getEvents () {
+      console.log("................")
         const convertDayName =[
           "یکشنبه",
           "دوشنبه",
@@ -552,49 +553,41 @@ export default {
           "شنبه",
         ]
         
-        let copyOfResult = this.selectedList;
-        let classesToShowOnCalender =[]
-
-        for(let i=0; i<copyOfResult.length;i++){
-          let courseName = copyOfResult[i].title;
-          let justDateAndTime = copyOfResult[i].time_room.replaceAll(" ","").replaceAll("\n","").replaceAll(/\(.*?\)/, " ").split(" ").slice(0,-1)
-          for (let j = 0; j < justDateAndTime.length; j++) {//1 or 2 or 3
-            let listOfEachCourseDatesAndTimes = justDateAndTime[j].split("-");
-            let seperatedTimes = listOfEachCourseDatesAndTimes[1].split(":");
-            listOfEachCourseDatesAndTimes[1];
-            classesToShowOnCalender.push({hourStart:convertPersianNumToEng(seperatedTimes[0]), minuteStart:convertPersianNumToEng(seperatedTimes[1]), hourEnd:convertPersianNumToEng(seperatedTimes[2]), minuteEnd:convertPersianNumToEng(seperatedTimes[3]) ,weekDay:listOfEachCourseDatesAndTimes[0],title:courseName, color:this.colors[i%this.colors.length]})
-          }
-        }
         const events = []
         const today = new Date()
-        today.setDate(today.getDate());
-        for (let i = 0; i < classesToShowOnCalender.length; i++) {
+        for(let i=0; i<this.selectedList.length;i++){
+          console.log(this.selectedList[i])
+          for(let j=0; j<this.selectedList[i]["seperated_time_and_place"].length;j++){
+            console.log("wtf",this.selectedList[i]["seperated_time_and_place"])
+            console.log("wtf2",this.selectedList[i]["seperated_time_and_place"][j])
+            let differenceToToDay = (convertDayName.indexOf(this.selectedList[i]["seperated_time_and_place"][j].day))-(today.getDay());
+            if(today.getDay()==6){
+              differenceToToDay = differenceToToDay< 0 ?differenceToToDay+7:differenceToToDay  
+            }else{
+              differenceToToDay = differenceToToDay<-today.getDay()-1?differenceToToDay+5-today.getDay():differenceToToDay>5-today.getDay()?differenceToToDay-7:differenceToToDay
+            }
 
-          let differenceToToDay = (convertDayName.indexOf(classesToShowOnCalender[i].weekDay))-(today.getDay());
-          if(today.getDay()==6){
-            differenceToToDay = differenceToToDay< 0 ?differenceToToDay+7:differenceToToDay  
-          }else{
-            differenceToToDay = differenceToToDay<-today.getDay()-1?differenceToToDay+5-today.getDay():differenceToToDay>5-today.getDay()?differenceToToDay-7:differenceToToDay
+            let thisDateStart = new Date()
+            let thisDateEnd = new Date()
+            thisDateStart.setDate(today.getDate() + differenceToToDay);
+            thisDateStart.setHours(this.selectedList[i]["seperated_time_and_place"][j].startHour)
+            thisDateStart.setMinutes(this.selectedList[i]["seperated_time_and_place"][j].startMinute)
+            thisDateStart.setSeconds(0)
+            thisDateEnd.setDate(today.getDate() + differenceToToDay);
+            thisDateEnd.setHours(this.selectedList[i]["seperated_time_and_place"][j].endHour)
+            thisDateEnd.setMinutes(this.selectedList[i]["seperated_time_and_place"][j].endMinute)
+            thisDateEnd.setSeconds(0)
+
+            events.push({
+              name: this.selectedList[i].title,
+              start: thisDateStart,
+              end: thisDateEnd,
+              color:this.colors[i%this.colors.length],
+              timed: 1,
+            })
           }
-          let thisDateStart = new Date()
-          let thisDateEnd = new Date()
-          thisDateStart.setDate(today.getDate() + differenceToToDay);
-          thisDateStart.setHours(classesToShowOnCalender[i].hourStart)
-          thisDateStart.setMinutes(classesToShowOnCalender[i].minuteStart)
-          thisDateStart.setSeconds(0)
-          thisDateEnd.setDate(today.getDate() + differenceToToDay);
-          thisDateEnd.setHours(classesToShowOnCalender[i].hourEnd)
-          thisDateEnd.setMinutes(classesToShowOnCalender[i].minuteEnd)
-          thisDateEnd.setSeconds(0)
-
-          events.push({
-            name: classesToShowOnCalender[i].title,
-            start: thisDateStart,
-            end: thisDateEnd,
-            color:classesToShowOnCalender[i].color,
-            timed: 1,
-          })
         }
+
         this.events = events
       },
       
@@ -626,9 +619,9 @@ export default {
     removeFromSelected: function (id) {
       this.selectedList = this.selectedList.filter((item) => item.id !== id);
     },
-    logtest() {
-      console.log("selected", this.selectedList);
-    },
+    // logtest() {
+    //   console.log("selected", this.selectedList);
+    // },
     search() {
       let flag = 0;
       this.errorMessages = [];

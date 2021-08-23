@@ -5,6 +5,10 @@ from selenium.webdriver.support.select import Select
 import json
 import re
 
+def arabicToPersian(text):
+    obj = {"ك":"ک","دِ":"د","بِ":"ب","زِ":"ز","ذِ":"ذ","شِ":"ش","سِ":"س","ى":"ی","ي":"ی","١":"۱","٢":"۲","٣":"۳","٤":"۴","٥":"۵","٦":"۶","٧":"۷","٨":"۸","٩":"۹","٠":"۰"}
+    regex = re.compile('|'.join(map(re.escape, obj)))
+    return regex.sub(lambda match: obj[match.group(0)], text)
 
 def convertIfPersianToEng(numberInString):
     difference = ord("۱")- ord("1")
@@ -44,17 +48,17 @@ def get_course_details():
     global Driver
     data = dict()
 
-    data['title'] = Driver.find_element_by_id('edName').text
+    data['title'] = arabicToPersian(Driver.find_element_by_id('edName').text)
     data['vahed'] = Driver.find_element_by_id('edTotalUnit').text
     data['group'] = Driver.find_element_by_id('edGroup').text
-    data['teacher'] = Driver.find_element_by_id('edTch').text
-    data['gender'] = Driver.find_element_by_id('edSex').text
-    data['unit'] = Driver.find_element_by_id('edUnit').text
-    data['time_in_week'] = Driver.find_element_by_id('edTimeInWeek').text
-    data['time_room'] = Driver.find_element_by_id('edTimeRoom').text
+    data['teacher'] = arabicToPersian(Driver.find_element_by_id('edTch').text)
+    data['gender'] = arabicToPersian(Driver.find_element_by_id('edSex').text)
+    data['unit'] = arabicToPersian(Driver.find_element_by_id('edUnit').text)
+    data['time_in_week'] = arabicToPersian(Driver.find_element_by_id('edTimeInWeek').text)
+    data['time_room'] = arabicToPersian(Driver.find_element_by_id('edTimeRoom').text)
     data['midterm_date'] = Driver.find_element_by_id('edMidDate').text
     data['midterm_time'] = Driver.find_element_by_id('edMidTime').text
-    data['capacity'] = Driver.find_element_by_id('edCapacity').text
+    data['capacity'] = arabicToPersian(Driver.find_element_by_id('edCapacity').text)
     data['id'] = Driver.find_element_by_id('edSrl').text + '^' + data['group']
     data['final_time'] = Driver.find_element_by_id('edFinalTime').text
     data['final_date'] = Driver.find_element_by_id('edFinalDate').text
@@ -74,7 +78,7 @@ def get_course_details():
         data['final_date_split'] = {"d":0,"m":0,"y":0} 
 
     try:
-        data['seperated_time_and_place']=seperateTimeAndPlace(data['time_room'])
+        data['seperated_time_and_place']=seperateTimeAndPlace(arabicToPersian(data['time_room']))
     except:
         data['seperated_time_and_place']={}
     return [data['id'], data]
@@ -93,8 +97,7 @@ input('Navigate to semester schedule page and press enter to continue ')
 select_element = Driver.find_element_by_id('edDepartment')
 select_object = Select(select_element)
 
-all_obj_name = [string.text for string in select_object.options[1:]]
-
+all_obj_name = [arabicToPersian(string.text) for string in select_object.options[1:]]
 # select units 
 for j in range(1, 6):
     datas = dict()
