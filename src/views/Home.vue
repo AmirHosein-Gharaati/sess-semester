@@ -398,9 +398,9 @@
               ></v-pagination>
             </div>
 
-            <v-spacer class="my-8"><hr></v-spacer>
+            <v-spacer v-if="!mobileDevice" class="my-8"><hr></v-spacer>
             <!-- Calendar -->
-            <div class="calenderShower light-blue darken-2">
+            <div v-if="!mobileDevice" class="calenderShower light-blue darken-2">
               <v-icon
                 large
                 @click="taggleCalender"
