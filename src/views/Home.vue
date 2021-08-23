@@ -156,7 +156,7 @@
               <template v-slot:activator="{ on, attrs }">
                 <v-text-field
                   v-model="timeStart"
-                  label="ساعت پایان"
+                  label="از ساعت"
                   prepend-icon="mdi-clock-time-four-outline"
                   readonly
                   v-bind="attrs"
@@ -188,7 +188,7 @@
               <template v-slot:activator="{ on, attrs }">
                 <v-text-field
                   v-model="timeEnd"
-                  label="ساعت پایان"
+                  label="تاساعت"
                   prepend-icon="mdi-clock-time-four-outline"
                   readonly
                   v-bind="attrs"
@@ -464,9 +464,9 @@
               ></v-pagination>
             </div>
 
-            <v-spacer v-if="!mobileDevice" class="my-8"><hr></v-spacer>
+            <v-spacer class="my-8"><hr></v-spacer>
             <!-- Calendar -->
-            <div v-if="!mobileDevice" class="calenderShower light-blue darken-2">
+            <div class="calenderShower light-blue darken-2">
               <v-icon
                 large
                 @click="taggleCalender"
@@ -516,17 +516,16 @@
 <script>
 import { mapFields } from "vuex-map-fields";
 import { mapGetters } from "vuex";
-// import { convertPersianNumToEng } from "../helpers/persianNumber_To_English";
 import { isTimeInBetween } from "../helpers/timeCalculator";
 export default {
   name: "Home",
   data() {
     return {
-      timeStart: null,
+      timeStart: "",
       menuStart: false,
       modalStart: false,
 
-      timeEnd: null,
+      timeEnd: "",
       menuEnd: false,
       modalEnd: false,
       
@@ -750,18 +749,15 @@ export default {
                 this.filters.teacherName.length === 0 ||
                 this.filters.teacherName.includes(this.json[unit][course]["teacher"])
               ) {
-<<<<<<< HEAD
-                if((this.timeStart.length===0 && this.timeEnd.length===0) || this.isTimeInBetween(this.timeStart,this.timeEnd, this.json[unit][course].seperated_time_and_place))
-                isTimeInBetween()
-                this.results.push(this.json[unit][course]);
-=======
                 if(
                   this.filters.place.length === 0 ||
                   placeSearchHelper(this.filters.place, this.json[unit][course])
                   ){
-                    this.results.push(this.json[unit][course]);
+                    if((this.timeStart.length==0 && this.timeEnd.length==0) || isTimeInBetween(this.timeStart,this.timeEnd, this.json[unit][course].seperated_time_and_place)){
+
+                     this.results.push(this.json[unit][course]);
                   }
->>>>>>> bc5db92f68ae3820196251b74d76d7bdf74a010f
+                }
               }
             }
           }

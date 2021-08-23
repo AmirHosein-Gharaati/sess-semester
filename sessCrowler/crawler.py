@@ -6,7 +6,7 @@ import json
 import re
 
 def arabicToPersian(text):
-    obj = {"ك":"ک","دِ":"د","بِ":"ب","زِ":"ز","ذِ":"ذ","شِ":"ش","سِ":"س","ى":"ی","ي":"ی","١":"۱","٢":"۲","٣":"۳","٤":"۴","٥":"۵","٦":"۶","٧":"۷","٨":"۸","٩":"۹","٠":"۰"}
+    obj = {"ك":"ک","دِ":"د","بِ":"ب","زِ":"ز","ذِ":"ذ","شِ":"ش","سِ":"س","ى":"ی","ي":"ی","١":"۱","٢":"۲","٣":"۳","٤":"۴","٥":"۵","٦":"۶","٧":"۷","٨":"۸","٩":"۹","٠":"۰","1":"۱","3":"۲","3":"۳","4":"۴","5":"۵","6":"۶","7":"۷","8":"۸","9":"۹","0":"۰"}
     regex = re.compile('|'.join(map(re.escape, obj)))
     return regex.sub(lambda match: obj[match.group(0)], text)
 
@@ -32,7 +32,7 @@ def seperateTimeAndPlace(timeAndDate):
     thsCourseDaysAndPlace = []
     for i in range(len(justDateAndTime)):
         dictOneOfCourseDays ={}
-        dictOneOfCourseDays["place"] = places[i]
+        dictOneOfCourseDays["place"] = places[i].replace("(","").replace(")","")
         seperated = justDateAndTime[i].split("-")
         dictOneOfCourseDays["day"]= seperated[0]
         seperatedTimes = seperated[1].split(":")
