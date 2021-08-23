@@ -95,10 +95,6 @@ tr.v-data-table__mobile-table-row{
 }
 .v-data-table__mobile-row:nth-child(6n-4){
   display: inline-grid;
-  /* float: right; */
-}
-.v-data-table__mobile-table-row .v-data-table__selected{
-  background: red!important;;
 }
 
 .v-data-table__mobile-row:last-child{

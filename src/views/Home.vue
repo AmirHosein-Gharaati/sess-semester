@@ -236,7 +236,7 @@
         </v-list>
 
         <v-list v-if="selectedTabActive">
-          <div v-if="selectedList.length && !mobileDevice">
+          <div v-if="selectedList.length">
               <v-dialog
                 v-model="dialog"
                 width="500"
@@ -430,61 +430,7 @@
                 </v-data-table>
               </v-layout>
 
-              <v-layout class="d-none d-lg-none" align-center child-flex>
-                <v-data-table
-                :headers="dataTableHeaders2"
-                :items="results"
-                class="elevation-1 row-pointer"
-                hide-default-footer
-                show-expand
-                :expanded.sync="expanded"
-                :page.sync="page"
-                :items-per-page="itemsPerPage"
-                @page-count="pageCount = $event"
-                >
-                  <template v-slot:expanded-item="{ headers, item }">
-                    <td :colspan="headers.length">
-                      <div class="white ma-4 rounded-lg pa-4">
-                        <v-row>
-                          <h4 class="mobile-expanded-title">{{ item['title'] }} | {{ item['vahed'] }} واحد</h4>
-                        </v-row>
-                        
-                        <div class="body-font mt-8">
-                            <v-col class="mobile-expanded">
-                              <span class="">نام استاد : </span>
-                              <span >{{ item['teacher'] }}</span>
-                            </v-col>
-
-                            <v-col class="mobile-expanded">
-                              <span class="">نام بخش : </span>
-                              <span>{{ item['unit'] }}</span>
-                            </v-col>
-
-                            <v-col class="mobile-expanded">
-                              <span class="">تاریخ امتحان : </span>
-                              <span>{{ item['final_date'] }}</span>
-                            </v-col>
-
-                            <v-col class="mobile-expanded">
-                              <span class="">شماره گروه : </span>
-                              <span>{{ item['group'] }}</span>
-                            </v-col>
-
-                            <v-col class="mobile-expanded">
-                              <span class="">جنسیت : </span>
-                              <span>{{ item['gender'] }}</span>
-                            </v-col>
-
-                            <v-col class="mobile-expanded">
-                              <span class="">زمان و مکان کلاس : </span>
-                              <span>{{ item['time_room'] }}</span>
-                            </v-col>
-                        </div>
-                      </div>
-                    </td>
-                  </template>
-                </v-data-table>
-              </v-layout>
+              
             </div>
 
             <div class="text-center pt-2">
@@ -510,7 +456,7 @@
                 <template>
                   <div dir="ltr">
                     
-                    <v-sheet v-if="calenderOpen && !mobileDevice" height="600" class="ma-2 rounded-lg">
+                    <v-sheet v-if="calenderOpen" height="600" class="ma-2 rounded-lg">
                       <v-calendar
                         ref="calendar"
                         v-model="value"
