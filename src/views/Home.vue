@@ -208,10 +208,20 @@
           <v-list-item>
             <v-autocomplete
               solo
-              label="مکان برگزاری کلاس(به زودی)"
+              label="مکان برگزاری کلاس"
               v-model="filters.place"
-              disabled
+              chips
+              multiple
+              hide-no-data
+              :items="getPlaces"
+              :search-input.sync="searchInput6"
+              @change="searchInput6 = ''"
             >
+              <template v-slot:selection="data">
+                <v-chip v-bind="data.attrs" close @click:close="remove(data)">
+                  {{ data.item }}
+                </v-chip>
+              </template>
             </v-autocomplete>
           </v-list-item>
           <v-list-item>
@@ -577,6 +587,7 @@ export default {
       searchInput2: "",
       searchInput3: "",
       searchInput4: "",
+      searchInput6: "",
       showAlert: false,
 
       errorMessages: [],
@@ -683,10 +694,24 @@ export default {
     removeFromSelected: function (id) {
       this.selectedList = this.selectedList.filter((item) => item.id !== id);
     },
-    // logtest() {
-    //   console.log("selected", this.selectedList);
-    // },
     search() {
+
+      let placeSearchHelper = (places, course) => {
+        let timeAndPlace = course['seperated_time_and_place'];
+        let arr = [];
+        for(let index in timeAndPlace){
+          let temp = timeAndPlace[index];
+          temp = temp.place;
+          arr.push(temp);
+        }
+        for(let index in arr){
+          let place = arr[index];
+          if (places.includes(place))
+            return true;
+        }
+        return false;
+      }
+
       let flag = 0;
       this.errorMessages = [];
 
@@ -725,9 +750,18 @@ export default {
                 this.filters.teacherName.length === 0 ||
                 this.filters.teacherName.includes(this.json[unit][course]["teacher"])
               ) {
+<<<<<<< HEAD
                 if((this.timeStart.length===0 && this.timeEnd.length===0) || this.isTimeInBetween(this.timeStart,this.timeEnd, this.json[unit][course].seperated_time_and_place))
                 isTimeInBetween()
                 this.results.push(this.json[unit][course]);
+=======
+                if(
+                  this.filters.place.length === 0 ||
+                  placeSearchHelper(this.filters.place, this.json[unit][course])
+                  ){
+                    this.results.push(this.json[unit][course]);
+                  }
+>>>>>>> bc5db92f68ae3820196251b74d76d7bdf74a010f
               }
             }
           }
@@ -747,6 +781,8 @@ export default {
         this.filters.teacherName.splice(this.filters.teacherName.indexOf(item.item), 1);
       } else if (item.parent.label.includes("نیمسال تحصیلی")) {
         this.filters.semester = "";
+      } else if(item.parent.label.includes("مکان برگزاری کلاس")){
+        this.filters.place.splice(this.filters.place.indexOf(item.item), 1);
       }
     },
   },
@@ -759,6 +795,7 @@ export default {
       "getTeachers",
       "getFilterItems",
       "getSele",
+      "getPlaces",
     ]),
   },
 };
