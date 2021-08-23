@@ -32,12 +32,16 @@ export default {
       for (let unit in this.json) {
         
         for(let course in this.json[unit]){
+          // console.log(this.json[unit][course]);
 
           this.json[unit][course]['id'] = course;
           this.json[unit][course]['teacher'] = teacherNameDivider(this.json[unit][course]['teacher']);
           this.json[unit][course]['vahed'] = toFarsiNumber(this.json[unit][course]['vahed']);
           this.json[unit][course]['group'] = toFarsiNumber(this.json[unit][course]['group']);
           this.json[unit][course]['time_room'] = toFarsiNumber(this.json[unit][course]['time_room']);
+          for(let index in this.json[unit][course]['seperated_time_and_place']){
+            this.json[unit][course]['seperated_time_and_place'][index].place = toFarsiNumber(this.json[unit][course]['seperated_time_and_place'][index].place);
+          }
 
           //unit name
           this.filtersItems.units.push(unit);
@@ -51,6 +55,12 @@ export default {
           this.filtersItems.teachersName.push(
             this.json[unit][course]['teacher']
           );
+
+          //place name
+          for(let index in this.json[unit][course]['seperated_time_and_place']){
+            let obj = this.json[unit][course]['seperated_time_and_place'][index];
+            this.filtersItems.places.push(obj.place);
+          }
         }
         
       }
