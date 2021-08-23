@@ -247,16 +247,34 @@
                   </v-card-title>
 
                   <v-card-text class="mt-4">
-                    <span style="font-weight: bold;">نام استاد: </span>{{dialogContent.teacher}}
-                    <br>
-                    <br>
-                    <span style="font-weight: bold;">گروه: </span>{{dialogContent.group}}
-                    <br>
-                    <br>
-                    <span style="font-weight: bold;">امتحان نهایی: </span>{{dialogContent.final_date}}
-                    <br>
-                    <br>
-                    <span style="font-weight: bold;">زمان و مکان کلاس: </span>{{dialogContent.time_room}}
+                    <v-list>
+                      <v-list-item>
+                        <span style="font-weight: bold;">نام استاد: </span>{{dialogContent.teacher}}
+                      </v-list-item>
+
+                      <v-list-item>
+                        <span style="font-weight: bold;">گروه: </span>{{dialogContent.group}}
+                      </v-list-item>
+
+                      <v-list-item>
+                        <span style="font-weight: bold;">واحد: </span>{{dialogContent.vahed}}
+                      </v-list-item>
+
+                      <v-list-item>
+                        <span style="font-weight: bold;">امتحان نهایی: </span>{{dialogContent.final_date}}
+                      </v-list-item>
+
+                      <v-list-item>
+                        <span style="font-weight: bold;">زمان و مکان کلاس: </span>{{dialogContent.time_room}}
+                      </v-list-item>
+                    </v-list>
+                      <v-list-item>
+                        <span style="font-weight: bold;">ظرفیت: </span>{{dialogContent.capacity}}
+                      </v-list-item>
+
+                      <v-list-item>
+                        <span style="font-weight: bold;">ساعت در هفته: </span>{{dialogContent.time_in_week}}
+                      </v-list-item>
                   </v-card-text>
                   <v-divider></v-divider>
                   <v-card-actions>
@@ -575,7 +593,10 @@ export default {
         teacher: null,
         group: null,
         final_date: null,
-        time_room: null
+        time_room: null,
+        capacity: null,
+        time_in_week : null,
+        vahed: null
       },
       searchInput1: "",
       searchInput2: "",
@@ -678,12 +699,15 @@ export default {
       return event.color
     },
     setDialogContent(item){
-      this.dialog = true;
       this.dialogContent.title = item.title;
       this.dialogContent.teacher = item.teacher;
       this.dialogContent.group = item.group;
       this.dialogContent.final_date = item.final_date;
       this.dialogContent.time_room = item.time_room;
+      this.dialogContent.capacity = item.capacity;
+      this.dialogContent.time_in_week = item.time_in_week;
+      this.dialogContent.vahed = item.vahed;
+      this.dialog = true;
     },
     removeFromSelected: function (id) {
       this.selectedList = this.selectedList.filter((item) => item.id !== id);
@@ -855,6 +879,10 @@ export default {
     margin-right: auto;
   }
   
+}
+
+.dialog-content{
+  margin: 0 1rem;
 }
 
 </style>
