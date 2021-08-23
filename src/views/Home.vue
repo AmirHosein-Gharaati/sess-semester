@@ -398,22 +398,23 @@
               ></v-pagination>
             </div>
 
-            <v-spacer class="my-10"><hr></v-spacer>
+            <v-spacer class="my-8"><hr></v-spacer>
             <!-- Calendar -->
-            <div class="calenderShower">
+            <div class="calenderShower light-blue darken-2">
               <v-icon
                 large
                 @click="taggleCalender"
+                color="white"
                 :class="calenderOpen?'calnderCloseIcon':''"
               >
                 mdi-chevron-down
               </v-icon>
-              <span style="margin:auto 1rem auto 2rem">نمایش تقویم</span>
+              <span style="margin:auto 1rem auto 2rem" class="white--text">نمایش تقویم</span>
               <div class="calenderHolder">
                 <template>
                   <div dir="ltr">
                     
-                    <v-sheet v-if="calenderOpen && !mobileDevice" height="850" class="ma-2 rounded-lg">
+                    <v-sheet v-if="calenderOpen && !mobileDevice" height="600" class="ma-2 rounded-lg">
                       <v-calendar
                         ref="calendar"
                         v-model="value"
