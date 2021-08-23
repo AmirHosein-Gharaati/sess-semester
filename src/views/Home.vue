@@ -140,15 +140,71 @@
             </v-autocomplete>
           </v-list-item>
 
+          
           <v-list-item>
-            <v-autocomplete
-              solo
-              label="ساعت برگزاری کلاس(به زودی)"
-              v-model="filters.time"
-              disabled
+            <v-menu
+              ref="menu1"
+              v-model="menuStart"
+              :close-on-content-click="false"
+              :nudge-right="40"
+              :return-value.sync="timeStart"
+              transition="scale-transition"
+              offset-y
+              max-width="290px"
+              min-width="290px"
             >
-            </v-autocomplete>
+              <template v-slot:activator="{ on, attrs }">
+                <v-text-field
+                  v-model="timeStart"
+                  label="ساعت پایان"
+                  prepend-icon="mdi-clock-time-four-outline"
+                  readonly
+                  v-bind="attrs"
+                  v-on="on"
+                ></v-text-field>
+              </template>
+              <v-time-picker
+                v-if="menuStart"
+                v-model="timeStart"
+                format="24hr"
+                full-width
+                @click:minute="$refs.menu1.save(timeStart)"
+              ></v-time-picker>
+            </v-menu>
           </v-list-item>
+
+          <v-list-item>
+            <v-menu
+              ref="menu2"
+              v-model="menuEnd"
+              :close-on-content-click="false"
+              :nudge-right="40"
+              :return-value.sync="timeEnd"
+              transition="scale-transition"
+              offset-y
+              max-width="290px"
+              min-width="290px"
+            >
+              <template v-slot:activator="{ on, attrs }">
+                <v-text-field
+                  v-model="timeEnd"
+                  label="ساعت پایان"
+                  prepend-icon="mdi-clock-time-four-outline"
+                  readonly
+                  v-bind="attrs"
+                  v-on="on"
+                ></v-text-field>
+              </template>
+              <v-time-picker
+                v-if="menuEnd"
+                v-model="timeEnd"
+                format="24hr"
+                full-width
+                @click:minute="$refs.menu2.save(timeEnd)"
+              ></v-time-picker>
+            </v-menu>
+          </v-list-item>
+
           <v-list-item>
             <v-autocomplete
               solo
@@ -451,10 +507,19 @@
 import { mapFields } from "vuex-map-fields";
 import { mapGetters } from "vuex";
 // import { convertPersianNumToEng } from "../helpers/persianNumber_To_English";
+import { isTimeInBetween } from "../helpers/timeCalculator";
 export default {
   name: "Home",
   data() {
     return {
+      timeStart: null,
+      menuStart: false,
+      modalStart: false,
+
+      timeEnd: null,
+      menuEnd: false,
+      modalEnd: false,
+      
       drawer: true,
       filterTabActive:true,
       selectedTabActive:false,
@@ -660,6 +725,8 @@ export default {
                 this.filters.teacherName.length === 0 ||
                 this.filters.teacherName.includes(this.json[unit][course]["teacher"])
               ) {
+                if((this.timeStart.length===0 && this.timeEnd.length===0) || this.isTimeInBetween(this.timeStart,this.timeEnd, this.json[unit][course].seperated_time_and_place))
+                isTimeInBetween()
                 this.results.push(this.json[unit][course]);
               }
             }
