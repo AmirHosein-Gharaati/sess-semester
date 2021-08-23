@@ -358,7 +358,7 @@
             class="pa-6">
             <h2 class="text-center my-4" id="search-h">نتایج جستجو</h2>
             <div id="app-back">
-              <v-layout class="d-none d-lg-flex" align-center child-flex>
+              <v-layout class="d-flex" align-center child-flex>
                 <v-data-table
                   :headers="dataTableHeaders"
                   :items="results"
@@ -396,12 +396,21 @@
                               <span class="title-font-weight">تاریخ امتحان : </span>
                               <span>{{ item['final_date'] }}</span>
                             </v-col>
+                            <v-col class="screen-expanded">
+                              <span class="title-font-weight">ساعت امتحان : </span>
+                              <span>{{item['final_time']}}</span>
+                            </v-col>
                           </v-row>
 
                           <v-row>
                             <v-col class="screen-expanded">
                               <span class="title-font-weight">شماره گروه : </span>
                               <span>{{ item['group'] }}</span>
+                            </v-col>
+
+                            <v-col class="screen-expanded">
+                              <span class="title-font-weight">واحد : </span>
+                              <span>{{ item['vahed'] }}</span>
                             </v-col>
 
                             <v-col class="screen-expanded">
@@ -421,7 +430,7 @@
                 </v-data-table>
               </v-layout>
 
-              <v-layout class="d-lg-none" align-center child-flex>
+              <v-layout class="d-none d-lg-none" align-center child-flex>
                 <v-data-table
                 :headers="dataTableHeaders2"
                 :items="results"
@@ -613,7 +622,7 @@ export default {
         { text: "درس", value: "title" },
         { text: "استاد", value: "teacher" },
         { text: "گروه", value: "group" },
-        { text: "واحد", value: "vahed" },
+        // { text: "واحد", value: "vahed" },
         { text: "زمان و مکان کلاس", value: "time_room" },
       ],
 
@@ -646,10 +655,7 @@ export default {
         const events = []
         const today = new Date()
         for(let i=0; i<this.selectedList.length;i++){
-          console.log(this.selectedList[i])
           for(let j=0; j<this.selectedList[i]["seperated_time_and_place"].length;j++){
-            console.log("wtf",this.selectedList[i]["seperated_time_and_place"])
-            console.log("wtf2",this.selectedList[i]["seperated_time_and_place"][j])
             let differenceToToDay = (convertDayName.indexOf(this.selectedList[i]["seperated_time_and_place"][j].day))-(today.getDay());
             if(today.getDay()==6){
               differenceToToDay = differenceToToDay< 0 ?differenceToToDay+7:differenceToToDay  

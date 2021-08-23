@@ -69,9 +69,40 @@ export default {
 </script>
 
 <style>
+
+html{
+  overflow: overlay!important;
+  overflow-x:hidden!important;
+}
+
+
 #app {
   font-family: 'Vazir', sans-serif;
+}
 
+.v-data-table > .v-data-table__wrapper .v-data-table__mobile-row {
+  min-height: 35px!important;
+}
+
+tr.v-data-table__mobile-table-row{
+  display: block!important;
+
+}
+.v-data-table__mobile-row:nth-child(6n-5){
+  display: inline-grid;
+  float: left;
+  background: none!important;
+}
+.v-data-table__mobile-row:nth-child(6n-4){
+  display: inline-grid;
+  /* float: right; */
+}
+.v-data-table__mobile-table-row .v-data-table__selected{
+  background: red!important;;
+}
+
+.v-data-table__mobile-row:last-child{
+  padding-bottom: 1.5rem!important;
 }
 .v-list-item .v-list-item__title, .v-list-item .v-list-item__subtitle {
   line-height: 1.1;
@@ -108,6 +139,9 @@ export default {
 }
 
 @media screen and (max-width: 768px) {
+  html{
+    overflow-x: hidden!important;
+  }
   ::-webkit-scrollbar {
     width: 0px;
   }
