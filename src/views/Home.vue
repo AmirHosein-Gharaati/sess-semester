@@ -140,6 +140,27 @@
             </v-autocomplete>
           </v-list-item>
 
+
+          <v-list-item>
+            <v-autocomplete
+              solo
+              label="مکان برگزاری کلاس"
+              v-model="filters.place"
+              chips
+              multiple
+              hide-no-data
+              :items="getPlaces"
+              :search-input.sync="searchInput6"
+              @change="searchInput6 = ''"
+            >
+              <template v-slot:selection="data">
+                <v-chip v-bind="data.attrs" close @click:close="remove(data)">
+                  {{ data.item }}
+                </v-chip>
+              </template>
+            </v-autocomplete>
+          </v-list-item>
+
           
           <v-list-item>
             <v-menu
@@ -188,7 +209,7 @@
               <template v-slot:activator="{ on, attrs }">
                 <v-text-field
                   v-model="timeEnd"
-                  label="تاساعت"
+                  label="تا ساعت"
                   prepend-icon="mdi-clock-time-four-outline"
                   readonly
                   v-bind="attrs"
@@ -205,25 +226,7 @@
             </v-menu>
           </v-list-item>
 
-          <v-list-item>
-            <v-autocomplete
-              solo
-              label="مکان برگزاری کلاس"
-              v-model="filters.place"
-              chips
-              multiple
-              hide-no-data
-              :items="getPlaces"
-              :search-input.sync="searchInput6"
-              @change="searchInput6 = ''"
-            >
-              <template v-slot:selection="data">
-                <v-chip v-bind="data.attrs" close @click:close="remove(data)">
-                  {{ data.item }}
-                </v-chip>
-              </template>
-            </v-autocomplete>
-          </v-list-item>
+          
           <v-list-item>
             <v-btn width="100%" x-large class="blue white--text" @click="search">
               <h3>جستجو</h3>
@@ -517,6 +520,7 @@
 import { mapFields } from "vuex-map-fields";
 import { mapGetters } from "vuex";
 import { isTimeInBetween } from "../helpers/timeCalculator";
+import { placeSearchHelper } from "../helpers/placeSearch";
 export default {
   name: "Home",
   data() {
@@ -694,22 +698,6 @@ export default {
       this.selectedList = this.selectedList.filter((item) => item.id !== id);
     },
     search() {
-
-      let placeSearchHelper = (places, course) => {
-        let timeAndPlace = course['seperated_time_and_place'];
-        let arr = [];
-        for(let index in timeAndPlace){
-          let temp = timeAndPlace[index];
-          temp = temp.place;
-          arr.push(temp);
-        }
-        for(let index in arr){
-          let place = arr[index];
-          if (places.includes(place))
-            return true;
-        }
-        return false;
-      }
 
       let flag = 0;
       this.errorMessages = [];
