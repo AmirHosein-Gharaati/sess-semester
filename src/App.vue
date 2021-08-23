@@ -33,10 +33,11 @@ export default {
 
         this.filtersItems.units.push(unit);
         for(let course in this.json[unit]){
-          
+          console.log(this.json[unit][course]);
           Object.keys(this.json[unit][course]).forEach(
             (key) => {
-              this.json[unit][course][key] = this.json[unit][course][key].ArabicToPersianCharacter();
+              if(typeof(key) == typeof(String))
+                this.json[unit][course][key] = this.json[unit][course][key].ArabicToPersianCharacter();
             }
           );
 
