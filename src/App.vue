@@ -80,6 +80,14 @@ html{
   font-family: 'Vazir', sans-serif;
 }
 
+.v-chip .v-chip__content {
+  white-space: pre-wrap;
+  text-align: right;
+}
+.v-chip.v-size--default {
+  min-height: 32px; 
+  height: auto !important;
+}
 .v-data-table > .v-data-table__wrapper .v-data-table__mobile-row {
   min-height: 35px!important;
 }
@@ -115,7 +123,9 @@ tr.v-data-table__mobile-table-row{
 .v-slide-group__next{
   display: none !important;
 }
-
+.v-application .pl-1 {
+  white-space: pre-wrap;
+}
 ::-webkit-scrollbar {
   width: 9px;
 }

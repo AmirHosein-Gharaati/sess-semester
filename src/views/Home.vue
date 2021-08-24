@@ -238,7 +238,7 @@
         <v-list v-if="selectedTabActive">
           <div v-if="selectedList.length">
               <v-dialog
-                v-model="courseDialog"
+                v-model="dialog"
                 width="500"
               >
                 <v-card>
@@ -282,7 +282,7 @@
                     <v-btn
                       color="primary"
                       text
-                      @click="courseDialog = false"
+                      @click="dialog = false"
                     >
                       بستن
                     </v-btn>
@@ -321,7 +321,7 @@
         <div fluid>
           <v-layout row wrap align-center class="d-none d-lg-flex d-xl-none">
             <v-flex align-self="center" class="text-center white--text ma-2" lg4>
-              <h3 class="font-weight-bold">به روز شده در: ۱ شهریور ۱۴۰۰</h3>
+              <h3 class="font-weight-bold">به روز شده در: ۱۴ فروردین ۱۴۰۰</h3>
             </v-flex>
 
             <v-flex align-self="center" lg4 class="ma-2 text-center">
@@ -357,6 +357,41 @@
             v-if="results.length !== 0 && results[0] !== -1"
             class="pa-6">
             <h2 class="text-center my-4" id="search-h">نتایج جستجو</h2>
+            <!-- Calendar -->
+            <div v-if="selectedList.length" class="calenderShower light-blue darken-2">
+              <v-icon
+                large
+                @click="taggleCalender"
+                color="white"
+                :class="calenderOpen?'calnderCloseIcon':''"
+              >
+                mdi-chevron-down
+              </v-icon>
+              <span style="margin:auto 1rem auto 2rem" class="white--text">نمایش تقویم</span>
+              <div class="calenderHolder">
+                <template>
+                  <div dir="ltr">
+                    
+                    <v-sheet v-if="calenderOpen" height="600" class="ma-2 rounded-lg">
+                      <v-calendar
+                        ref="calendar"
+                        v-model="value"
+                        :weekdays="weekday"
+                        :type="type"
+                        :events="events"
+                        :first-interval= 6
+                        :interval-count= 16
+                        :event-overlap-mode="mode"
+                        :event-overlap-threshold="30"
+                        :event-color="getEventColor"
+                      ></v-calendar>
+                    </v-sheet>
+                  </div>
+                </template>
+              </div>
+            </div>
+            <v-spacer v-if="selectedList.length" class="my-8"><hr></v-spacer>
+
             <div id="app-back">
               <v-layout class="d-flex" align-center child-flex>
                 <v-data-table
@@ -440,40 +475,6 @@
               ></v-pagination>
             </div>
 
-            <v-spacer class="my-8"><hr></v-spacer>
-            <!-- Calendar -->
-            <div class="calenderShower light-blue darken-2">
-              <v-icon
-                large
-                @click="taggleCalender"
-                color="white"
-                :class="calenderOpen?'calnderCloseIcon':''"
-              >
-                mdi-chevron-down
-              </v-icon>
-              <span style="margin:auto 1rem auto 2rem" class="white--text">نمایش تقویم</span>
-              <div class="calenderHolder">
-                <template>
-                  <div dir="ltr">
-                    
-                    <v-sheet v-if="calenderOpen" height="600" class="ma-2 rounded-lg">
-                      <v-calendar
-                        ref="calendar"
-                        v-model="value"
-                        :weekdays="weekday"
-                        :type="type"
-                        :events="events"
-                        :first-interval= 6
-                        :interval-count= 16
-                        :event-overlap-mode="mode"
-                        :event-overlap-threshold="30"
-                        :event-color="getEventColor"
-                      ></v-calendar>
-                    </v-sheet>
-                  </div>
-                </template>
-              </div>
-            </div>
 
             <v-row v-if="results[0] === -1" class="ma-2 pa-4" justify="center">
               <h2 class="text-center">موردی پیدا نشد</h2>
@@ -542,7 +543,7 @@ export default {
         ],
       // End calender
       expanded: [],
-      courseDialog: false,
+      dialog: false,
       dialogContent :{
         title: null,
         teacher: null,
@@ -587,6 +588,7 @@ export default {
   mounted() {},
   watch: {
     selectedList: function getEvents () {
+      // console.log("................")
         const convertDayName =[
           "یکشنبه",
           "دوشنبه",
@@ -658,7 +660,7 @@ export default {
       this.dialogContent.capacity = item.capacity;
       this.dialogContent.time_in_week = item.time_in_week;
       this.dialogContent.vahed = item.vahed;
-      this.courseDialog = true;
+      this.dialog = true;
     },
     removeFromSelected: function (id) {
       this.selectedList = this.selectedList.filter((item) => item.id !== id);
@@ -802,15 +804,15 @@ export default {
   align-items: center;
   justify-content: space-between;
   flex-direction: row;
-  min-width: 240px;
+  min-width: 247px;
   width:300px;
   padding: 7px;
-  margin: 10px auto;
+  margin-top: 5px;
+  margin:7px auto;
+  background-color: #c0dbe4;
   border-radius: 4px;
-  border: 0px groove black;
   font-size: 12px;
   box-shadow: 3px 3px 6px #d9d9d9, -3px -3px 6px #ffffff;
-  background-color: #e6e3ff;
 }
 
 /* nav */
