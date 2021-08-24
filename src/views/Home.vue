@@ -238,7 +238,7 @@
         <v-list v-if="selectedTabActive">
           <div v-if="selectedList.length">
               <v-dialog
-                v-model="dialog"
+                v-model="courseDialog"
                 width="500"
               >
                 <v-card>
@@ -282,7 +282,7 @@
                     <v-btn
                       color="primary"
                       text
-                      @click="dialog = false"
+                      @click="courseDialog = false"
                     >
                       بستن
                     </v-btn>
@@ -321,7 +321,7 @@
         <div fluid>
           <v-layout row wrap align-center class="d-none d-lg-flex d-xl-none">
             <v-flex align-self="center" class="text-center white--text ma-2" lg4>
-              <h3 class="font-weight-bold">به روز شده در: ۱۴ فروردین ۱۴۰۰</h3>
+              <h3 class="font-weight-bold">به روز شده در: ۱ شهریور ۱۴۰۰</h3>
             </v-flex>
 
             <v-flex align-self="center" lg4 class="ma-2 text-center">
@@ -542,7 +542,7 @@ export default {
         ],
       // End calender
       expanded: [],
-      dialog: false,
+      courseDialog: false,
       dialogContent :{
         title: null,
         teacher: null,
@@ -587,7 +587,6 @@ export default {
   mounted() {},
   watch: {
     selectedList: function getEvents () {
-      // console.log("................")
         const convertDayName =[
           "یکشنبه",
           "دوشنبه",
@@ -659,7 +658,7 @@ export default {
       this.dialogContent.capacity = item.capacity;
       this.dialogContent.time_in_week = item.time_in_week;
       this.dialogContent.vahed = item.vahed;
-      this.dialog = true;
+      this.courseDialog = true;
     },
     removeFromSelected: function (id) {
       this.selectedList = this.selectedList.filter((item) => item.id !== id);
@@ -803,15 +802,15 @@ export default {
   align-items: center;
   justify-content: space-between;
   flex-direction: row;
-  min-width: 247px;
+  min-width: 240px;
   width:300px;
   padding: 7px;
-  margin-top: 5px;
-  margin:7px auto;
-  background-color: #c0dbe4;
+  margin: 10px auto;
   border-radius: 4px;
+  border: 0px groove black;
   font-size: 12px;
   box-shadow: 3px 3px 6px #d9d9d9, -3px -3px 6px #ffffff;
+  background-color: #e6e3ff;
 }
 
 /* nav */
