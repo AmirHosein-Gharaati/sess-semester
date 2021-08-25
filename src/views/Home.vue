@@ -293,7 +293,7 @@
 
               <v-dialog
                 v-model="showSelectedListAlert"
-                width="50rem"
+                width="60rem"
               >
                 <v-card>
                   <v-card-title class="grey lighten-2">
@@ -301,12 +301,34 @@
                   </v-card-title>
 
                   <v-card-text class="mt-4">
+
+                    <v-list v-if="interferenceClassTimeCourse.length !== 0" class="text-center">
+                      <h2 class="mb-8">تداخل ساعت کلاسی</h2>
+                      <v-list-item v-for="list in interferenceClassTimeCourse" :key="list.id">
+                        <v-row>
+                          <v-col cols="6" class="mb-12">
+                            <span style="font-weight: bold;" class="ma-10">{{ list[0].title }}</span>
+                            <br>
+                            <span class="my-8">{{ list[0].time_room }}</span>
+                          </v-col>
+                          <v-col cols="6" class="mb-12">
+                            <span style="font-weight: bold;">{{ list[1].title }}</span>
+                            <br>
+                            <span>{{ list[1].time_room }}</span>
+                          </v-col>
+                          <hr>
+                        </v-row>
+                      </v-list-item>
+                    </v-list>
+
+                    <v-divider></v-divider>
+
                     <v-list>
                       <v-list-item>
-                        <span style="font-weight: bold;">نام استاد: </span>
                       </v-list-item>
-                      
                     </v-list>
+
+
                   </v-card-text>
                   <v-divider></v-divider>
                   <v-card-actions>
@@ -555,6 +577,7 @@ import { mapFields } from "vuex-map-fields";
 import { mapGetters } from "vuex";
 import { isTimeInBetween } from "../helpers/timeCalculator";
 import { placeSearchHelper } from "../helpers/placeSearch";
+import { checkTimeInterference } from "../helpers/timeInterference";
 export default {
   name: "Home",
   data() {
@@ -694,37 +717,16 @@ export default {
         }
 
         this.events = events
-        // console.log(this.selectedList[0]);
 
+        // Check time interference
         this.interferenceClassTimeCourse = [];
         for(let i=0 ; i < this.selectedList.length - 1 ; i++){
           for(let j=i+1 ; j < this.selectedList.length ; j++){
             let course1 = this.selectedList[i];
             let course2 = this.selectedList[j];
             
-            let c1Time = course1['seperated_time_and_place'];
-            let c2Time = course2['seperated_time_and_place'];
-
-            for(let k=0 ; k < c1Time.length ; k++){
-              for(let l=0 ; l < c2Time.length ; l++){
-                let course1Day = c1Time[k]['day'].replace(/\s/g, '');
-                let course2Day = c2Time[l]['day'].replace(/\s/g, '');
-                // console.log(convertDayName.indexOf(course1Day), convertDayName.indexOf(course2Day));
-                if(convertDayName.indexOf(course1Day) !== convertDayName.indexOf(course2Day)){
-                  continue;
-                }
-
-                let course1StartTime = new Date(2000, 1, 0, c1Time[k]['startHour'], c1Time[k]['startMinute']);
-                let course2StartTime = new Date(2000, 1, 0, c2Time[l]['startHour'], c2Time[l]['startMinute']);
-
-                let course1EndTime = new Date(2000, 1, 0, c1Time[k]['endHour'], c1Time[k]['endMinute']);
-                let course2EndTime = new Date(2000, 1, 0, c2Time[l]['endHour'], c2Time[l]['endMinute']);
-                
-                if((course1StartTime > course2StartTime && course1StartTime < course2EndTime)  || (course1EndTime < course2EndTime && course1EndTime > course2StartTime) || (course1StartTime.getTime() === course2StartTime.getTime() && course1EndTime.getTime() === course2EndTime.getTime()))
-                  this.interferenceClassTimeCourse.push([course1, course2]);
-              }
-            }
-          
+            if(checkTimeInterference(course1, course2))
+              this.interferenceClassTimeCourse.push([course1, course2]);
           }
         }
         console.log(this.interferenceClassTimeCourse);
