@@ -267,7 +267,7 @@
                       <v-list-item>
                         <span style="font-weight: bold;">زمان و مکان کلاس: </span>{{dialogContent.time_room}}
                       </v-list-item>
-                    </v-list>
+                    
                       <v-list-item>
                         <span style="font-weight: bold;">ظرفیت: </span>{{dialogContent.capacity}}
                       </v-list-item>
@@ -275,6 +275,7 @@
                       <v-list-item>
                         <span style="font-weight: bold;">ساعت در هفته: </span>{{dialogContent.time_in_week}}
                       </v-list-item>
+                    </v-list>
                   </v-card-text>
                   <v-divider></v-divider>
                   <v-card-actions>
@@ -289,6 +290,65 @@
                   </v-card-actions>
                 </v-card>
               </v-dialog>
+
+              <v-dialog
+                v-model="showSelectedListAlert"
+                width="50rem"
+              >
+                <v-card>
+                  <v-card-title class="grey lighten-2">
+                    <h2>تداخل دروس</h2>
+                  </v-card-title>
+
+                  <v-card-text class="mt-4">
+                    <v-list>
+                      <v-list-item>
+                        <span style="font-weight: bold;">نام استاد: </span>
+                      </v-list-item>
+                      
+                    </v-list>
+                  </v-card-text>
+                  <v-divider></v-divider>
+                  <v-card-actions>
+                    <v-spacer></v-spacer>
+                    <v-btn
+                      color="primary"
+                      text
+                      @click="showSelectedListAlert = false"
+                    >
+                      بستن
+                    </v-btn>
+                  </v-card-actions>
+                </v-card>
+              </v-dialog>
+
+                <div class="text-center">
+                  <v-badge
+                    v-if="interferenceClassTimeCourse.length + interferenceFinalTimeCourses.length !== 0"
+                    :content="interferenceClassTimeCourse.length + interferenceFinalTimeCourses.length"
+                    :value="interferenceClassTimeCourse.length + interferenceFinalTimeCourses.length"
+                    color="red"
+                    left
+                    overlap
+                    class="my-2 text-center"
+                  >
+                    <v-btn
+                      color="white"
+                      class="pa-4"
+                      elevation="0"
+                      small
+                      fab
+                      dark
+                      @click="showSelectedListAlert = true"
+                    >
+                      <v-icon large color="red">
+                        mdi-alert
+                      </v-icon>
+                    </v-btn>
+                  </v-badge>
+                </div>
+                
+              
               
                 <div
                   v-for="item in selectedList"
@@ -554,6 +614,9 @@ export default {
         time_in_week : null,
         vahed: null
       },
+      showSelectedListAlert : false,
+      interferenceClassTimeCourse: [],
+      interferenceFinalTimeCourses : [],
       searchInput1: "",
       searchInput2: "",
       searchInput3: "",
@@ -588,7 +651,6 @@ export default {
   mounted() {},
   watch: {
     selectedList: function getEvents () {
-      // console.log("................")
         const convertDayName =[
           "یکشنبه",
           "دوشنبه",
@@ -632,6 +694,40 @@ export default {
         }
 
         this.events = events
+        // console.log(this.selectedList[0]);
+
+        this.interferenceClassTimeCourse = [];
+        for(let i=0 ; i < this.selectedList.length - 1 ; i++){
+          for(let j=i+1 ; j < this.selectedList.length ; j++){
+            let course1 = this.selectedList[i];
+            let course2 = this.selectedList[j];
+            
+            let c1Time = course1['seperated_time_and_place'];
+            let c2Time = course2['seperated_time_and_place'];
+
+            for(let k=0 ; k < c1Time.length ; k++){
+              for(let l=0 ; l < c2Time.length ; l++){
+                let course1Day = c1Time[k]['day'].replace(/\s/g, '');
+                let course2Day = c2Time[l]['day'].replace(/\s/g, '');
+                // console.log(convertDayName.indexOf(course1Day), convertDayName.indexOf(course2Day));
+                if(convertDayName.indexOf(course1Day) !== convertDayName.indexOf(course2Day)){
+                  continue;
+                }
+
+                let course1StartTime = new Date(2000, 1, 0, c1Time[k]['startHour'], c1Time[k]['startMinute']);
+                let course2StartTime = new Date(2000, 1, 0, c2Time[l]['startHour'], c2Time[l]['startMinute']);
+
+                let course1EndTime = new Date(2000, 1, 0, c1Time[k]['endHour'], c1Time[k]['endMinute']);
+                let course2EndTime = new Date(2000, 1, 0, c2Time[l]['endHour'], c2Time[l]['endMinute']);
+                
+                if((course1StartTime > course2StartTime && course1StartTime < course2EndTime)  || (course1EndTime < course2EndTime && course1EndTime > course2StartTime) || (course1StartTime.getTime() === course2StartTime.getTime() && course1EndTime.getTime() === course2EndTime.getTime()))
+                  this.interferenceClassTimeCourse.push([course1, course2]);
+              }
+            }
+          
+          }
+        }
+        console.log(this.interferenceClassTimeCourse);
       },
       
     // End calender
