@@ -729,7 +729,6 @@ export default {
               this.interferenceClassTimeCourse.push([course1, course2]);
           }
         }
-        console.log(this.interferenceClassTimeCourse);
       },
       
     // End calender
