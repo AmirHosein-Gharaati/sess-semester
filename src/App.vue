@@ -146,11 +146,10 @@ tr.v-data-table__mobile-table-row{
   background: #b0b0b0dd;
   transition: background .5s;
 }
-
+.row {
+  margin: 0px!important;
+}
 @media screen and (max-width: 768px) {
-  html{
-    overflow-x: hidden!important;
-  }
   ::-webkit-scrollbar {
     width: 0px;
   }

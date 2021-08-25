@@ -468,9 +468,9 @@
               <span style="margin:auto 1rem auto 2rem" class="white--text">نمایش تقویم</span>
               <div class="calenderHolder">
                 <template>
-                  <div dir="ltr">
+                  <div class="theCalender" dir="ltr">
                     
-                    <v-sheet v-if="calenderOpen" height="600" class="ma-2 rounded-lg">
+                    <v-sheet v-if="calenderOpen" :height="mobileDevice?400:600" class="ma-2 rounded-lg">
                       <v-calendar
                         ref="calendar"
                         v-model="value"
@@ -901,6 +901,14 @@ export default {
   padding:1rem 1rem;
   border-radius: .4rem;
 }
+@media screen and (max-width: 768px) {
+  .calenderShower{
+    overflow-x:scroll ;
+  }
+  .theCalender{
+    min-width:600px;
+  }
+}
 .calnderCloseIcon{
   transform: rotate(-180deg);
 }
@@ -960,6 +968,8 @@ export default {
   top: 50%;
   transform: translateY(-50%);
 }
+
+
 
 </style>
 
