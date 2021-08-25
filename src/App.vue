@@ -126,6 +126,9 @@ tr.v-data-table__mobile-table-row{
 .v-application .pl-1 {
   white-space: pre-wrap;
 }
+.v-btn {
+  letter-spacing: 0!important;
+}
 ::-webkit-scrollbar {
   width: 9px;
 }

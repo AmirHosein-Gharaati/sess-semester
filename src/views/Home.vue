@@ -66,6 +66,8 @@
               :rules="rules"
               :items="getSemesters"
               hide-no-data
+              hide-details="auto"
+              class="mb-3"
               hide-selected
               chips
               :search-input.sync="searchInput1"
@@ -87,6 +89,8 @@
               :items="getUnits"
               multiple
               hide-no-data
+              hide-details="auto"
+              class="mb-3"
               chips
               :search-input.sync="searchInput2"
               @change="searchInput2 = ''"
@@ -108,6 +112,8 @@
               :items="getCourses"
               multiple
               hide-no-data
+              hide-details="auto"
+              class="mb-3"
               chips
               :search-input.sync="searchInput3"
               @change="searchInput3 = ''"
@@ -126,6 +132,8 @@
               label="نام استاد"
               v-model="filters.teacherName"
               :items="getTeachers"
+              hide-details="auto"
+              class="mb-3"
               hide-no-data
               multiple
               chips
@@ -149,6 +157,8 @@
               chips
               multiple
               hide-no-data
+              hide-details="auto"
+              class="mb-3"
               :items="getPlaces"
               :search-input.sync="searchInput6"
               @change="searchInput6 = ''"
@@ -180,6 +190,8 @@
                   label="از ساعت"
                   prepend-icon="mdi-clock-time-four-outline"
                   readonly
+                  hide-details="auto"
+                  class="mb-3"
                   v-bind="attrs"
                   v-on="on"
                 ></v-text-field>
@@ -296,25 +308,25 @@
                 width="60rem"
               >
                 <v-card>
-                  <v-card-title class="grey lighten-2">
+                  <v-card-title class="pa-5 grey lighten-2">
                     <h2>تداخل دروس</h2>
                   </v-card-title>
 
                   <v-card-text class="mt-4">
 
                     <v-list v-if="interferenceClassTimeCourse.length !== 0" class="text-center">
-                      <h2 class="mb-8">تداخل ساعت کلاسی</h2>
+                      <h2 class="">تداخل ساعت کلاسی</h2>
                       <v-list-item v-for="list in interferenceClassTimeCourse" :key="list.id">
                         <v-row>
-                          <v-col cols="6" class="mb-12">
-                            <span style="font-weight: bold;" class="ma-10">{{ list[0].title }}</span>
+                          <v-col cols="6" class="mt-12">
+                            <span style="font-weight: bold;" >{{ list[0].title }}</span>
                             <br>
-                            <span class="my-8">{{ list[0].time_room }}</span>
+                            <span class="my-8">{{ list[0].time_room.split(/\(.*?\)/).join("") }}</span>
                           </v-col>
-                          <v-col cols="6" class="mb-12">
+                          <v-col cols="6" class="mt-12">
                             <span style="font-weight: bold;">{{ list[1].title }}</span>
                             <br>
-                            <span>{{ list[1].time_room }}</span>
+                            <span>{{ list[1].time_room.split(/\(.*?\)/).join("")  }}</span>
                           </v-col>
                           <hr>
                         </v-row>
