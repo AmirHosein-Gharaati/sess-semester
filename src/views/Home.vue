@@ -453,7 +453,7 @@
         <div class="white rounded-lg justify-content-center ma-2" fluid>
           <div
             v-if="results.length !== 0 && results[0] !== -1"
-            class="pa-6">
+            :class="mobileDevice?'pa-3':'pa-6'">
             <h2 class="text-center my-4" id="search-h">نتایج جستجو</h2>
             <!-- Calendar -->
             <div v-if="selectedList.length" class="calenderShower light-blue darken-2">
