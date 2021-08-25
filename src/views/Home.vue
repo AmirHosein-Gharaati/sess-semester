@@ -195,6 +195,7 @@
                   v-bind="attrs"
                   v-on="on"
                 ></v-text-field>
+                <v-icon class="closeTime" @click="clearFromTime">mdi-close</v-icon>
               </template>
               <v-time-picker
                 v-if="menuStart"
@@ -224,9 +225,12 @@
                   label="تا ساعت"
                   prepend-icon="mdi-clock-time-four-outline"
                   readonly
+                  hide-details="auto"
+                  class="mb-3"
                   v-bind="attrs"
                   v-on="on"
                 ></v-text-field>
+                <v-icon class="closeTime" @click="clearToTime">mdi-close</v-icon>
               </template>
               <v-time-picker
                 v-if="menuEnd"
@@ -596,11 +600,9 @@ export default {
     return {
       timeStart: "",
       menuStart: false,
-      modalStart: false,
 
       timeEnd: "",
       menuEnd: false,
-      modalEnd: false,
       
       drawer: true,
       filterTabActive:true,
@@ -746,6 +748,12 @@ export default {
     // End calender
   },
   methods: {
+    clearFromTime(){
+      this.timeStart="";
+    },
+    clearToTime(){
+      this.timeEnd="";
+    },
     filterTabClick(){
       this.filterTabActive = true
       this.selectedTabActive = false
@@ -945,6 +953,12 @@ export default {
 
 .dialog-content{
   margin: 0 1rem;
+}
+.closeTime{
+  position: absolute!important;;
+  left:1rem;
+  top: 50%;
+  transform: translateY(-50%);
 }
 
 </style>
