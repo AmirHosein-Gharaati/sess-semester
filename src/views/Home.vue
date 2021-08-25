@@ -307,58 +307,9 @@
                 </v-card>
               </v-dialog>
 
-              <v-dialog
-                v-model="showSelectedListAlert"
-                width="60rem"
-              >
-                <v-card>
-                  <v-card-title class="pa-5 grey lighten-2">
-                    <h2>تداخل دروس</h2>
-                  </v-card-title>
+              
 
-                  <v-card-text class="mt-4">
-
-                    <v-list v-if="interferenceClassTimeCourse.length !== 0" class="text-center">
-                      <h2 class="">تداخل ساعت کلاسی</h2>
-                      <v-list-item v-for="list in interferenceClassTimeCourse" :key="list.id">
-                        <v-row>
-                          <v-col cols="6" class="mt-12">
-                            <span style="font-weight: bold;" >{{ list[0].title }}</span>
-                            <br>
-                            <span class="my-8">{{ list[0].time_room.split(/\(.*?\)/).join("") }}</span>
-                          </v-col>
-                          <v-col cols="6" class="mt-12">
-                            <span style="font-weight: bold;">{{ list[1].title }}</span>
-                            <br>
-                            <span>{{ list[1].time_room.split(/\(.*?\)/).join("")  }}</span>
-                          </v-col>
-                          <hr>
-                        </v-row>
-                      </v-list-item>
-                    </v-list>
-
-                    <v-divider></v-divider>
-
-                    <v-list>
-                      <v-list-item>
-                      </v-list-item>
-                    </v-list>
-
-
-                  </v-card-text>
-                  <v-divider></v-divider>
-                  <v-card-actions>
-                    <v-spacer></v-spacer>
-                    <v-btn
-                      color="primary"
-                      text
-                      @click="showSelectedListAlert = false"
-                    >
-                      بستن
-                    </v-btn>
-                  </v-card-actions>
-                </v-card>
-              </v-dialog>
+              
 
                 <div class="text-center">
                   <v-badge
@@ -396,7 +347,7 @@
                   <div class="class-item-name-box">
                     <div>
                       <label class="group-name"> {{ item.title }} </label>
-                      <label class="class-name">{{ item.group }}</label>
+                      <!-- <label class="class-name">{{ item.group }}</label> -->
                     </div>
                     <label class="proff-name"> {{ item.teacher }} </label>
                   </div>
@@ -414,6 +365,90 @@
                 </div>
         </v-list>
       </v-navigation-drawer>
+
+      <v-dialog
+        v-model="showSelectedListAlert"
+        width="60rem"
+      >
+        <v-card>
+          <v-card-title class="pa-5 grey lighten-2">
+            <h2>تداخل دروس</h2>
+          </v-card-title>
+
+          <v-card-text class="mt-4">
+
+            <v-list v-if="interferenceClassTimeCourse.length !== 0" class="text-center">
+              <h2 class="">تداخل ساعت کلاسی</h2>
+              <v-list-item v-for="list in interferenceClassTimeCourse" :key="list.id">
+                <v-row>
+                  <v-col cols="6" class="mt-12">
+                    <span style="font-weight: bold;" >{{ list[0].title }}</span>
+                    <br>
+                    <span >{{ list[0].time_room.split(/\(.*?\)/).join("") }}</span>
+                    <br>
+                    <span>{{list[0].teacher}}</span>
+                  </v-col>
+                  <v-col cols="6" class="mt-12">
+                    <span style="font-weight: bold;">{{ list[1].title }}</span>
+                    <br>
+                    <span>{{ list[1].time_room.split(/\(.*?\)/).join("")  }}</span>
+                    <br>
+                    <span>{{ list[1].teacher }}</span>
+                  </v-col>
+                  <hr>
+                </v-row>
+              </v-list-item>
+            </v-list>
+
+            <v-divider></v-divider>
+
+            <v-list>
+              <v-list-item>
+                <!-- TODO -->
+              </v-list-item>
+            </v-list>
+
+          </v-card-text>
+          <v-divider></v-divider>
+          <v-card-actions>
+            <v-spacer></v-spacer>
+            <v-btn
+              color="primary"
+              text
+              @click="showSelectedListAlert = false"
+            >
+              بستن
+            </v-btn>
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+
+      <v-snackbar
+        v-model="snackbarAlert"
+        timeout="0"
+        color="red darken-4"
+      >
+        <span class="white--text">تداخل دروس!</span>
+        <template v-slot:action="{ attrs }">
+          <v-btn 
+            @click="showSelectedListAlert = true" 
+            color="white"
+            text
+          >
+            جزئیات
+          </v-btn>
+
+          <v-btn
+            color="white"
+            text
+            v-bind="attrs"
+            @click="snackbarAlert = false"
+          >
+            بستن
+          </v-btn>
+        </template>
+      </v-snackbar>
+      
     
       <div :class="drawer?'exeptNav':''">
         <div fluid>
@@ -651,6 +686,7 @@ export default {
         time_in_week : null,
         vahed: null
       },
+      snackbarAlert: false,
       showSelectedListAlert : false,
       interferenceClassTimeCourse: [],
       interferenceFinalTimeCourses : [],
@@ -742,6 +778,12 @@ export default {
             if(checkTimeInterference(course1, course2))
               this.interferenceClassTimeCourse.push([course1, course2]);
           }
+        }
+        if(this.interferenceClassTimeCourse.length > 0){
+          this.snackbarAlert = true;
+        }
+        else{
+          this.snackbarAlert = false;
         }
       },
       
