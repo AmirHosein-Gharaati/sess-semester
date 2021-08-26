@@ -824,7 +824,6 @@ export default {
             thisDateEnd.setHours(this.selectedList[i]["seperated_time_and_place"][j].endHour)
             thisDateEnd.setMinutes(this.selectedList[i]["seperated_time_and_place"][j].endMinute)
             thisDateEnd.setSeconds(0)
-            console.log(this.selectedList[i]);
             events.push({
               name: this.selectedList[i].title,
               start: thisDateStart,
@@ -862,14 +861,12 @@ export default {
           this.snackbarAlert = false;
         }
 
-        // console.log(this.selectedList[0]);
       },
       
     // End calender
   },
   methods: {
     showEvent ({ nativeEvent, event }) {
-      console.log(this.selectedEvent)
         const open = () => {
           this.selectedEvent = event
           this.selectedElement = nativeEvent.target
