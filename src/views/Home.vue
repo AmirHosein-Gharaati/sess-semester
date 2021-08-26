@@ -285,6 +285,10 @@
                       </v-list-item>
                     
                       <v-list-item>
+                        <span style="font-weight: bold;">بخش: </span>{{dialogContent.unit}}
+                      </v-list-item>
+
+                      <v-list-item>
                         <span style="font-weight: bold;">ظرفیت: </span>{{dialogContent.capacity}}
                       </v-list-item>
 
@@ -778,11 +782,6 @@ export default {
         { text: "زمان و مکان کلاس", value: "time_room" },
       ],
 
-      dataTableHeaders2: [
-        { text: "درس", value: "title" },
-        { text: "استاد", value: "teacher" },
-        { text: "زمان و مکان کلاس", value: "time_room" },
-      ],
       selectedList: [],
     };
   },
@@ -910,6 +909,7 @@ export default {
       this.dialogContent.final_time = item.final_time;
       this.dialogContent.time_room = item.time_room;
       this.dialogContent.capacity = item.capacity;
+      this.dialogContent.unit = item.unit;
       this.dialogContent.time_in_week = item.time_in_week;
       this.dialogContent.vahed = item.vahed;
       this.dialog = true;
