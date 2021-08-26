@@ -505,7 +505,7 @@
             </v-flex>
 
             <v-flex align-self="center" class="text-center white--text mt-6" xs12>
-              <h4 class="font-weight-bold">به روز شده در: ۱۴ فروردین ۱۴۰۰</h4>
+              <h4 class="font-weight-bold">به روز شده در: ۴ شهریور ۱۴۰۰</h4>
             </v-flex>
           </v-layout>
         </div>
