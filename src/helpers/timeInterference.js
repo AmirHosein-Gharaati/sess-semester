@@ -1,4 +1,4 @@
-function checkTimeInterference(course1, course2){
+function checkClassTimeInterference(course1, course2){
     const convertDayName =[
         "یکشنبه",
         "دوشنبه",
@@ -7,7 +7,7 @@ function checkTimeInterference(course1, course2){
         "پنجشنبه",
         "جمعه",
         "شنبه",
-      ]
+    ]
 
     let c1Time = course1['seperated_time_and_place'];
     let c2Time = course2['seperated_time_and_place'];
@@ -33,4 +33,31 @@ function checkTimeInterference(course1, course2){
     return false;
 }
 
-export {checkTimeInterference};
+function checkFinalTimeInterference(course1, course2){
+
+    let course1DateTime = course1['final_date_split'];
+    let course2DateTime = course2['final_date_split'];
+
+    let course1ClockTime = course1['final_time_split'];
+    let course2ClockTime = course2['final_time_split'];
+
+    // -------
+    let course1DayTime = new Date(course1DateTime['y'], course1DateTime['m'], course1DateTime['d']);
+    let course2DayTime = new Date(course2DateTime['y'], course2DateTime['m'], course2DateTime['d']);
+
+    if(course1DayTime.getTime() !== course2DayTime.getTime())
+        return false;
+
+    let course1StartTime = new Date(course1DateTime['y'], course1DateTime['m'], course1DateTime['d'], course1ClockTime['start_hour'], course1ClockTime['start_minute']);
+    let course2StartTime = new Date(course2DateTime['y'], course2DateTime['m'], course2DateTime['d'], course2ClockTime['start_hour'], course2ClockTime['start_minute']);
+    
+    let course1EndTime = new Date(course1DateTime['y'], course1DateTime['m'], course1DateTime['d'], course1ClockTime['end_hour'], course1ClockTime['end_minute']);
+    let course2EndTime = new Date(course2DateTime['y'], course2DateTime['m'], course2DateTime['d'], course2ClockTime['end_hour'], course2ClockTime['end_minute']);
+
+    if((course1StartTime > course2StartTime && course1StartTime < course2EndTime)  || (course1EndTime < course2EndTime && course1EndTime > course2StartTime) || (course1StartTime.getTime() === course2StartTime.getTime() && course1EndTime.getTime() === course2EndTime.getTime()))
+        return true;
+    
+    return false;
+}
+
+export {checkClassTimeInterference, checkFinalTimeInterference};

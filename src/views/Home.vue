@@ -371,7 +371,7 @@
         width="60rem"
       >
         <v-card>
-          <v-card-title class="pa-5 grey lighten-2">
+          <v-card-title class="pa-5 red darken-1 white--text">
             <h2>تداخل دروس</h2>
           </v-card-title>
 
@@ -400,7 +400,33 @@
               </v-list-item>
             </v-list>
 
-            <v-divider></v-divider>
+            <v-list v-if="interferenceFinalTimeCourses.length !== 0" class="text-center">
+              <v-divider v-if="interferenceClassTimeCourse.length !== 0"></v-divider>
+              <h2 class="mt-8">تداخل ساعت امتحان نهایی</h2>
+              <v-list-item v-for="list in interferenceFinalTimeCourses" :key="list.id">
+                <v-row>
+                  <v-col cols="6" class="mt-12">
+                    <span style="font-weight: bold;" >{{ list[0].title }}</span>
+                    <br>
+                    <span >{{ list[0].final_date }}</span>
+                    <br>
+                    <span >{{ list[0].final_time }}</span>
+                    <br>
+                    <span>{{list[0].teacher}}</span>
+                  </v-col>
+                  <v-col cols="6" class="mt-12">
+                    <span style="font-weight: bold;" >{{ list[1].title }}</span>
+                    <br>
+                    <span >{{ list[1].final_date }}</span>
+                    <br>
+                    <span >{{ list[1].final_time }}</span>
+                    <br>
+                    <span>{{list[1].teacher}}</span>
+                  </v-col>
+                  <hr>
+                </v-row>
+              </v-list-item>
+            </v-list>
 
             <v-list>
               <v-list-item>
@@ -425,8 +451,8 @@
 
       <v-snackbar
         v-model="snackbarAlert"
-        timeout="0"
-        color="red darken-4"
+        timeout="-1"
+        color="red darken-1"
       >
         <span class="white--text">تداخل دروس!</span>
         <template v-slot:action="{ attrs }">
@@ -454,7 +480,7 @@
         <div fluid>
           <v-layout row wrap align-center class="d-none d-lg-flex d-xl-none">
             <v-flex align-self="center" class="text-center white--text ma-2" lg4>
-              <h3 class="font-weight-bold">به روز شده در: ۱۴ فروردین ۱۴۰۰</h3>
+              <h3 class="font-weight-bold">به روز شده در: ۴ شهریور ۱۴۰۰</h3>
             </v-flex>
 
             <v-flex align-self="center" lg4 class="ma-2 text-center">
@@ -463,10 +489,7 @@
             </v-flex>
 
             <v-flex align-self="center" class="text-center ma-2">
-              <v-btn class="blue white--text" disabled>
-                <h4 class="font-weight-bold">چیدن و زمانبندی برنامه درسی</h4>
-                <h4>(به زودی)</h4>
-              </v-btn>
+                <h3 class="font-weight-bold white--text">نسخه 0.1.0</h3>
             </v-flex>
           </v-layout>
 
@@ -628,7 +651,7 @@ import { mapFields } from "vuex-map-fields";
 import { mapGetters } from "vuex";
 import { isTimeInBetween } from "../helpers/timeCalculator";
 import { placeSearchHelper } from "../helpers/placeSearch";
-import { checkTimeInterference } from "../helpers/timeInterference";
+import { checkClassTimeInterference, checkFinalTimeInterference } from "../helpers/timeInterference";
 export default {
   name: "Home",
   data() {
@@ -770,21 +793,26 @@ export default {
 
         // Check time interference
         this.interferenceClassTimeCourse = [];
+        this.interferenceFinalTimeCourses = [];
         for(let i=0 ; i < this.selectedList.length - 1 ; i++){
           for(let j=i+1 ; j < this.selectedList.length ; j++){
             let course1 = this.selectedList[i];
             let course2 = this.selectedList[j];
             
-            if(checkTimeInterference(course1, course2))
+            if(checkClassTimeInterference(course1, course2))
               this.interferenceClassTimeCourse.push([course1, course2]);
+            if(checkFinalTimeInterference(course1, course2))
+              this.interferenceFinalTimeCourses.push([course1, course2]);
           }
         }
-        if(this.interferenceClassTimeCourse.length > 0){
+        if(this.interferenceClassTimeCourse.length + this.interferenceFinalTimeCourses.length > 0){
           this.snackbarAlert = true;
         }
         else{
           this.snackbarAlert = false;
         }
+
+        // console.log(this.selectedList[0]);
       },
       
     // End calender
