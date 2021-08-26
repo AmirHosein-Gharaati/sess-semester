@@ -277,7 +277,7 @@
                       </v-list-item>
 
                       <v-list-item>
-                        <span style="font-weight: bold;">امتحان نهایی: </span>{{dialogContent.final_date}}
+                        <span style="font-weight: bold;">امتحان نهایی: </span>{{dialogContent.final_date +' ('+dialogContent.final_time+')' }}
                       </v-list-item>
 
                       <v-list-item>
@@ -540,7 +540,49 @@
                         :event-overlap-mode="mode"
                         :event-overlap-threshold="30"
                         :event-color="getEventColor"
+                        @click:event="showEvent"
                       ></v-calendar>
+                       <v-menu
+                        v-model="selectedOpen"
+                        :close-on-content-click="false"
+                        :activator="selectedElement"
+                        offset-x
+                      >
+                        <v-card
+                          color="grey lighten-4"
+                          min-width="290px"
+                          flat
+                        >
+                          <v-toolbar
+                            :color="selectedEvent.color"
+                            dark
+                          >
+                            <v-toolbar-title v-html="selectedEvent.name"></v-toolbar-title>
+                          </v-toolbar>
+                            <v-list style="background:none">
+                              <v-list-item>
+                                <span style="font-weight: bold;">نام استاد: </span>{{selectedEvent.teacher}}
+                              </v-list-item>
+
+                              <v-list-item>
+                                <span style="font-weight: bold;">گروه: </span>{{selectedEvent.group}}
+                              </v-list-item>
+
+                              <v-list-item>
+                                <span style="font-weight: bold;">امتحان نهایی: </span>{{selectedEvent.final_date +' ('+selectedEvent.final_time+')' }}
+                              </v-list-item>
+                            </v-list>
+                          <v-card-actions style="flex-direction: row-reverse;">
+                            <v-btn
+                              text
+                              color="primary"
+                              @click="selectedOpen = false"
+                            >
+                              بستن
+                            </v-btn>
+                          </v-card-actions>
+                        </v-card>
+                      </v-menu>
                     </v-sheet>
                   </div>
                 </template>
@@ -566,7 +608,7 @@
                   >
                     <template v-slot:expanded-item="{ headers, item }">
                     <td :colspan="headers.length">
-                      <div class="white ma-4 rounded-lg pa-5">
+                      <div class="white rounded-lg" :class="mobileDevice?'pa-1 mt-2 mb-2':'pa-3 ma-4'">
                         <v-row>
                           <h2>{{ item['title'] }} | {{ item['vahed'] }} واحد</h2>
                         </v-row>
@@ -682,6 +724,9 @@ export default {
       
       ],
       value: '',
+      selectedEvent: {},
+      selectedElement: null,
+      selectedOpen: false,
       events: [],
       colors: [
         "#222831",
@@ -704,6 +749,7 @@ export default {
         teacher: null,
         group: null,
         final_date: null,
+        final_time: null,
         time_room: null,
         capacity: null,
         time_in_week : null,
@@ -778,13 +824,17 @@ export default {
             thisDateEnd.setHours(this.selectedList[i]["seperated_time_and_place"][j].endHour)
             thisDateEnd.setMinutes(this.selectedList[i]["seperated_time_and_place"][j].endMinute)
             thisDateEnd.setSeconds(0)
-
+            console.log(this.selectedList[i]);
             events.push({
               name: this.selectedList[i].title,
               start: thisDateStart,
               end: thisDateEnd,
               color:this.colors[i%this.colors.length],
               timed: 1,
+              teacher:this.selectedList[i].teacher, 
+              group:this.selectedList[i].group, 
+              final_time:this.selectedList[i].final_time, 
+              final_date:this.selectedList[i].final_date
             })
           }
         }
@@ -818,6 +868,23 @@ export default {
     // End calender
   },
   methods: {
+    showEvent ({ nativeEvent, event }) {
+      console.log(this.selectedEvent)
+        const open = () => {
+          this.selectedEvent = event
+          this.selectedElement = nativeEvent.target
+          requestAnimationFrame(() => requestAnimationFrame(() => this.selectedOpen = true))
+        }
+
+        if (this.selectedOpen) {
+          this.selectedOpen = false
+          requestAnimationFrame(() => requestAnimationFrame(() => open()))
+        } else {
+          open()
+        }
+
+        nativeEvent.stopPropagation()
+      },
     clearFromTime(){
       this.timeStart="";
     },
@@ -843,6 +910,7 @@ export default {
       this.dialogContent.teacher = item.teacher;
       this.dialogContent.group = item.group;
       this.dialogContent.final_date = item.final_date;
+      this.dialogContent.final_time = item.final_time;
       this.dialogContent.time_room = item.time_room;
       this.dialogContent.capacity = item.capacity;
       this.dialogContent.time_in_week = item.time_in_week;
