@@ -84,7 +84,7 @@ def get_course_details():
     return [data['id'], data]
     
 
-PATH = r'D:/Development/chromedriver.exe'
+PATH = r'/home/amirhosein/Amir/chromedriver'
 
 Driver = webdriver.Chrome(PATH)
 
@@ -100,8 +100,8 @@ select_object = Select(select_element)
 all_obj_name = [arabicToPersian(string.text) for string in select_object.options[1:]]
 # select units 
 
-# toCrowlIndexes = [1,9,10,12,18]
-toCrowlIndexes = [91]
+toCrowlIndexes = [1,9,10,12,41,18]
+# toCrowlIndexes = [91]
 # for j in range(1, 6):
 for j in toCrowlIndexes:
     datas = dict()
