@@ -10,6 +10,7 @@ const state = {
     teacherName: [],
     time: [],
     place: [],
+    gender : [],
   },
 
   filtersItems: {
@@ -19,6 +20,7 @@ const state = {
     teachersName: [],
     times: [],
     places: [],
+    genders : [],
   },
 
   json: null,
@@ -32,6 +34,7 @@ const getters = {
   getCourses: (state) => state.filtersItems.course,
   getTeachers: (state) => state.filtersItems.teachersName,
   getPlaces : (state) => state.filtersItems.places,
+  getGenders : (state) => state.filtersItems.genders,
   getJson: (state) => state.json,
 };
 

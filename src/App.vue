@@ -59,6 +59,9 @@ export default {
             this.json[unit][course]['teacher']
           );
 
+          //gender
+          this.filtersItems.genders.push(this.json[unit][course]['gender']);
+
           //place name
           for(let index in this.json[unit][course]['seperated_time_and_place']){
             let obj = this.json[unit][course]['seperated_time_and_place'][index];

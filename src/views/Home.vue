@@ -152,6 +152,29 @@
           <v-list-item>
             <v-autocomplete
               solo
+              label="جنسیت"
+              v-model="filters.gender"
+              :items="getGenders"
+              multiple
+              hide-no-data
+              hide-details="auto"
+              class="mb-3"
+              chips
+              :search-input.sync="searchInput7"
+              @change="searchInput7 = ''"
+            >
+              <template v-slot:selection="data">
+                <v-chip v-bind="data.attrs" close @click:close="remove(data)">
+                  {{ data.item }}
+                </v-chip>
+              </template>
+            </v-autocomplete>
+          </v-list-item>
+
+
+          <v-list-item>
+            <v-autocomplete
+              solo
               label="مکان برگزاری کلاس"
               v-model="filters.place"
               chips
@@ -501,7 +524,7 @@
             </v-flex>
 
             <v-flex align-self="center" class="text-center ma-2">
-                <h3 class="font-weight-bold white--text">نسخه 0.1.1</h3>
+                <h3 class="font-weight-bold white--text">نسخه 0.1.2</h3>
             </v-flex>
           </v-layout>
 
@@ -780,6 +803,7 @@ export default {
       searchInput3: "",
       searchInput4: "",
       searchInput6: "",
+      searchInput7: "",
       showAlert: false,
 
       errorMessages: [],
@@ -980,13 +1004,17 @@ export default {
                 this.filters.teacherName.includes(this.json[unit][course]["teacher"])
               ) {
                 if(
+                  this.filters.gender.length === 0 ||
+                  this.filters.gender.includes(this.json[unit][course]['gender'])
+                ){
+                  if(
                   this.filters.place.length === 0 ||
                   placeSearchHelper(this.filters.place, this.json[unit][course])
                   ){
                     if((this.timeStart.length==0 && this.timeEnd.length==0) || isTimeInBetween(this.timeStart,this.timeEnd, this.json[unit][course].seperated_time_and_place)){
-
-                     this.results.push(this.json[unit][course]);
+                      this.results.push(this.json[unit][course]);
                   }
+                }
                 }
               }
             }
@@ -1009,6 +1037,8 @@ export default {
         this.filters.semester = "";
       } else if(item.parent.label.includes("مکان برگزاری کلاس")){
         this.filters.place.splice(this.filters.place.indexOf(item.item), 1);
+      } else if(item.parent.label.includes("جنسیت")){
+        this.filters.gender.splice(this.filters.place.indexOf(item.item), 1);
       }
     },
   },
@@ -1022,6 +1052,7 @@ export default {
       "getFilterItems",
       "getSele",
       "getPlaces",
+      "getGenders",
     ]),
   },
 };
