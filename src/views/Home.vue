@@ -264,6 +264,11 @@
 
                   <v-card-text class="mt-4">
                     <v-list>
+
+                      <v-list-item>
+                        <span style="font-weight: bold;">بخش: </span>{{dialogContent.unit}}
+                      </v-list-item>
+
                       <v-list-item>
                         <span style="font-weight: bold;">نام استاد: </span>{{dialogContent.teacher}}
                       </v-list-item>
@@ -277,6 +282,10 @@
                       </v-list-item>
 
                       <v-list-item>
+                        <span style="font-weight: bold;">جنسیت: </span>{{dialogContent.gender}}
+                      </v-list-item>
+
+                      <v-list-item>
                         <span style="font-weight: bold;">امتحان نهایی: </span>{{dialogContent.final_date +' ('+dialogContent.final_time+')' }}
                       </v-list-item>
 
@@ -284,10 +293,6 @@
                         <span style="font-weight: bold;">زمان و مکان کلاس: </span>{{dialogContent.time_room}}
                       </v-list-item>
                     
-                      <v-list-item>
-                        <span style="font-weight: bold;">بخش: </span>{{dialogContent.unit}}
-                      </v-list-item>
-
                       <v-list-item>
                         <span style="font-weight: bold;">ظرفیت: </span>{{dialogContent.capacity}}
                       </v-list-item>
@@ -757,6 +762,7 @@ export default {
         title: null,
         teacher: null,
         group: null,
+        gender: null,
         final_date: null,
         final_time: null,
         time_room: null,
@@ -927,6 +933,7 @@ export default {
       this.dialogContent.unit = item.unit;
       this.dialogContent.time_in_week = item.time_in_week;
       this.dialogContent.vahed = item.vahed;
+      this.dialogContent.gender = item.gender;
       this.dialog = true;
     },
     removeFromSelected: function (id) {
