@@ -849,11 +849,10 @@ export default {
         // Check time interference
         this.interferenceClassTimeCourse = [];
         this.interferenceFinalTimeCourses = [];
-        for(let i=0 ; i < this.selectedList.length - 1 ; i++){
+        for(let i=0 ; i < this.selectedList.length ; i++){
           for(let j=i+1 ; j < this.selectedList.length ; j++){
             let course1 = this.selectedList[i];
             let course2 = this.selectedList[j];
-            
             if(checkClassTimeInterference(course1, course2))
               this.interferenceClassTimeCourse.push([course1, course2]);
             if(checkFinalTimeInterference(course1, course2))

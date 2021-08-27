@@ -20,14 +20,20 @@ function checkClassTimeInterference(course1, course2){
                 continue;
             }
 
+
             let course1StartTime = new Date(2000, 1, 0, c1Time[k]['startHour'], c1Time[k]['startMinute']);
             let course2StartTime = new Date(2000, 1, 0, c2Time[l]['startHour'], c2Time[l]['startMinute']);
 
             let course1EndTime = new Date(2000, 1, 0, c1Time[k]['endHour'], c1Time[k]['endMinute']);
             let course2EndTime = new Date(2000, 1, 0, c2Time[l]['endHour'], c2Time[l]['endMinute']);
             
-            if((course1StartTime > course2StartTime && course1StartTime < course2EndTime)  || (course1EndTime < course2EndTime && course1EndTime > course2StartTime) || (course1StartTime.getTime() === course2StartTime.getTime() && course1EndTime.getTime() === course2EndTime.getTime()))
+            if((course1StartTime > course2StartTime && course1StartTime < course2EndTime)  ||
+            (course1EndTime < course2EndTime && course1EndTime > course2StartTime) ||
+            (course1StartTime <= course2StartTime && course1EndTime >= course2EndTime)
+            ){
                 return true;
+            }
+                
         }   
     }
     return false;
@@ -54,8 +60,12 @@ function checkFinalTimeInterference(course1, course2){
     let course1EndTime = new Date(course1DateTime['y'], course1DateTime['m'], course1DateTime['d'], course1ClockTime['end_hour'], course1ClockTime['end_minute']);
     let course2EndTime = new Date(course2DateTime['y'], course2DateTime['m'], course2DateTime['d'], course2ClockTime['end_hour'], course2ClockTime['end_minute']);
 
-    if((course1StartTime > course2StartTime && course1StartTime < course2EndTime)  || (course1EndTime < course2EndTime && course1EndTime > course2StartTime) || (course1StartTime.getTime() === course2StartTime.getTime() && course1EndTime.getTime() === course2EndTime.getTime()))
+    if((course1StartTime > course2StartTime && course1StartTime < course2EndTime)  ||
+    (course1EndTime < course2EndTime && course1EndTime > course2StartTime) ||
+    (course1StartTime <= course2StartTime && course1EndTime >= course2EndTime)
+    ){
         return true;
+    }
     
     return false;
 }
