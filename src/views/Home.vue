@@ -335,6 +335,9 @@
                       </v-icon>
                     </v-btn>
                   </v-badge>
+
+                  
+                  <p>مجموع واحدها: {{ vahedsSum }}</p>
                 </div>
                 
               
@@ -652,6 +655,8 @@ import { mapGetters } from "vuex";
 import { isTimeInBetween } from "../helpers/timeCalculator";
 import { placeSearchHelper } from "../helpers/placeSearch";
 import { checkClassTimeInterference, checkFinalTimeInterference } from "../helpers/timeInterference";
+import { convertPersianNumToEng } from "../helpers/persianNumber_To_English";
+import { toFarsiNumber } from "../helpers/english_to_persian";
 export default {
   name: "Home",
   data() {
@@ -709,6 +714,7 @@ export default {
         time_in_week : null,
         vahed: null
       },
+      vahedsSum : null,
       snackbarAlert: false,
       showSelectedListAlert : false,
       interferenceClassTimeCourse: [],
@@ -747,6 +753,7 @@ export default {
   mounted() {},
   watch: {
     selectedList: function getEvents () {
+        
         const convertDayName =[
           "یکشنبه",
           "دوشنبه",
@@ -812,12 +819,20 @@ export default {
           this.snackbarAlert = false;
         }
 
-        // console.log(this.selectedList[0]);
+        this.vahedsSum = toFarsiNumber(this.sumOfVaheds());
       },
       
     // End calender
   },
   methods: {
+    sumOfVaheds(){
+      let sum = 0;
+      for(let i=0 ; i < this.selectedList.length ; i++){
+        let course = this.selectedList[i];
+        sum += convertPersianNumToEng(course['vahed']);
+      }
+      return sum;
+    },
     clearFromTime(){
       this.timeStart="";
     },
