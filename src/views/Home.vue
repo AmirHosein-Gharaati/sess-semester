@@ -515,7 +515,8 @@
         <div fluid>
           <v-layout row wrap align-center class="d-none d-lg-flex d-xl-none">
             <v-flex align-self="center" class="text-center white--text ma-2" lg4>
-              <h3 class="font-weight-bold">به روز شده در: ۴ شهریور ۱۴۰۰</h3>
+              <h3 class="font-weight-bold">به روز شده در: ۵ شهریور ۱۴۰۰</h3>
+              <h4 class="font-weight-bold">ساعت ۲۳:۱۵</h4>
             </v-flex>
 
             <v-flex align-self="center" lg4 class="ma-2 text-center">
@@ -536,7 +537,8 @@
             </v-flex>
 
             <v-flex align-self="center" class="text-center white--text mt-6" xs12>
-              <h4 class="font-weight-bold">به روز شده در: ۴ شهریور ۱۴۰۰</h4>
+              <h4 class="font-weight-bold">به روز شده در: ۵ شهریور ۱۴۰۰</h4>
+              <h4 class="font-weight-bold">ساعت ۲۳:۱۵</h4>
             </v-flex>
           </v-layout>
         </div>
