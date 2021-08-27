@@ -13,7 +13,7 @@ const state = {
   },
 
   filtersItems: {
-    semesters: ['1399-2'],
+    semesters: ['1400-1'],
     units: [],
     course: [],
     teachersName: [],

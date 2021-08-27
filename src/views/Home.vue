@@ -277,13 +277,17 @@
                       </v-list-item>
 
                       <v-list-item>
-                        <span style="font-weight: bold;">امتحان نهایی: </span>{{dialogContent.final_date}}
+                        <span style="font-weight: bold;">امتحان نهایی: </span>{{dialogContent.final_date +' ('+dialogContent.final_time+')' }}
                       </v-list-item>
 
                       <v-list-item>
                         <span style="font-weight: bold;">زمان و مکان کلاس: </span>{{dialogContent.time_room}}
                       </v-list-item>
                     
+                      <v-list-item>
+                        <span style="font-weight: bold;">بخش: </span>{{dialogContent.unit}}
+                      </v-list-item>
+
                       <v-list-item>
                         <span style="font-weight: bold;">ظرفیت: </span>{{dialogContent.capacity}}
                       </v-list-item>
@@ -504,7 +508,7 @@
             </v-flex>
 
             <v-flex align-self="center" class="text-center white--text mt-6" xs12>
-              <h4 class="font-weight-bold">به روز شده در: ۱۴ فروردین ۱۴۰۰</h4>
+              <h4 class="font-weight-bold">به روز شده در: ۴ شهریور ۱۴۰۰</h4>
             </v-flex>
           </v-layout>
         </div>
@@ -543,7 +547,49 @@
                         :event-overlap-mode="mode"
                         :event-overlap-threshold="30"
                         :event-color="getEventColor"
+                        @click:event="showEvent"
                       ></v-calendar>
+                       <v-menu
+                        v-model="selectedOpen"
+                        :close-on-content-click="false"
+                        :activator="selectedElement"
+                        offset-x
+                      >
+                        <v-card
+                          color="grey lighten-4"
+                          min-width="290px"
+                          flat
+                        >
+                          <v-toolbar
+                            :color="selectedEvent.color"
+                            dark
+                          >
+                            <v-toolbar-title v-html="selectedEvent.name"></v-toolbar-title>
+                          </v-toolbar>
+                            <v-list style="background:none">
+                              <v-list-item>
+                                <span style="font-weight: bold;">نام استاد: </span>{{selectedEvent.teacher}}
+                              </v-list-item>
+
+                              <v-list-item>
+                                <span style="font-weight: bold;">گروه: </span>{{selectedEvent.group}}
+                              </v-list-item>
+
+                              <v-list-item>
+                                <span style="font-weight: bold;">امتحان نهایی: </span>{{selectedEvent.final_date +' ('+selectedEvent.final_time+')' }}
+                              </v-list-item>
+                            </v-list>
+                          <v-card-actions style="flex-direction: row-reverse;">
+                            <v-btn
+                              text
+                              color="primary"
+                              @click="selectedOpen = false"
+                            >
+                              بستن
+                            </v-btn>
+                          </v-card-actions>
+                        </v-card>
+                      </v-menu>
                     </v-sheet>
                   </div>
                 </template>
@@ -569,7 +615,7 @@
                   >
                     <template v-slot:expanded-item="{ headers, item }">
                     <td :colspan="headers.length">
-                      <div class="white ma-4 rounded-lg pa-5">
+                      <div class="white rounded-lg" :class="mobileDevice?'pa-1 mt-2 mb-2':'pa-3 ma-4'">
                         <v-row>
                           <h2>{{ item['title'] }} | {{ item['vahed'] }} واحد</h2>
                         </v-row>
@@ -687,6 +733,9 @@ export default {
       
       ],
       value: '',
+      selectedEvent: {},
+      selectedElement: null,
+      selectedOpen: false,
       events: [],
       colors: [
         "#222831",
@@ -709,6 +758,7 @@ export default {
         teacher: null,
         group: null,
         final_date: null,
+        final_time: null,
         time_room: null,
         capacity: null,
         time_in_week : null,
@@ -738,11 +788,6 @@ export default {
         { text: "زمان و مکان کلاس", value: "time_room" },
       ],
 
-      dataTableHeaders2: [
-        { text: "درس", value: "title" },
-        { text: "استاد", value: "teacher" },
-        { text: "زمان و مکان کلاس", value: "time_room" },
-      ],
       selectedList: [],
     };
   },
@@ -785,13 +830,16 @@ export default {
             thisDateEnd.setHours(this.selectedList[i]["seperated_time_and_place"][j].endHour)
             thisDateEnd.setMinutes(this.selectedList[i]["seperated_time_and_place"][j].endMinute)
             thisDateEnd.setSeconds(0)
-
             events.push({
               name: this.selectedList[i].title,
               start: thisDateStart,
               end: thisDateEnd,
               color:this.colors[i%this.colors.length],
               timed: 1,
+              teacher:this.selectedList[i].teacher, 
+              group:this.selectedList[i].group, 
+              final_time:this.selectedList[i].final_time, 
+              final_date:this.selectedList[i].final_date
             })
           }
         }
@@ -833,6 +881,22 @@ export default {
       }
       return sum;
     },
+    showEvent ({ nativeEvent, event }) {
+        const open = () => {
+          this.selectedEvent = event
+          this.selectedElement = nativeEvent.target
+          requestAnimationFrame(() => requestAnimationFrame(() => this.selectedOpen = true))
+        }
+
+        if (this.selectedOpen) {
+          this.selectedOpen = false
+          requestAnimationFrame(() => requestAnimationFrame(() => open()))
+        } else {
+          open()
+        }
+
+        nativeEvent.stopPropagation()
+      },
     clearFromTime(){
       this.timeStart="";
     },
@@ -858,8 +922,10 @@ export default {
       this.dialogContent.teacher = item.teacher;
       this.dialogContent.group = item.group;
       this.dialogContent.final_date = item.final_date;
+      this.dialogContent.final_time = item.final_time;
       this.dialogContent.time_room = item.time_room;
       this.dialogContent.capacity = item.capacity;
+      this.dialogContent.unit = item.unit;
       this.dialogContent.time_in_week = item.time_in_week;
       this.dialogContent.vahed = item.vahed;
       this.dialog = true;
