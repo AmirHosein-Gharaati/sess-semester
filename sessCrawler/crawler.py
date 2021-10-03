@@ -84,7 +84,7 @@ def get_course_details():
     return [data['id'], data]
     
 
-PATH = r'/home/amirhosein/Amir/chromedriver'
+PATH = r'D:\chromedriver'
 
 Driver = webdriver.Chrome(PATH)
 
