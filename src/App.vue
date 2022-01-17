@@ -55,9 +55,9 @@ export default {
           );
 
           //teacher name
-          this.filtersItems.teachersName.push(
-            this.json[unit][course]['teacher']
-          );
+          this.json[unit][course]['teacher'].split(' | ').forEach(str => {
+             this.filtersItems.teachersName.push(str);
+          });
 
           //gender
           this.filtersItems.genders.push(this.json[unit][course]['gender']);
