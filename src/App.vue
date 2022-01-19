@@ -30,7 +30,6 @@ export default {
       for (let unit in this.json) {
         
         for(let course in this.json[unit]){
-          // console.log(this.json[unit][course]);
 
           this.json[unit][course]['id'] = course;
           this.json[unit][course]['teacher'] = teacherNameDivider(this.json[unit][course]['teacher']);
