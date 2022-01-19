@@ -60,12 +60,17 @@ function checkFinalTimeInterference(course1, course2){
     let course1EndTime = new Date(course1DateTime['y'], course1DateTime['m'], course1DateTime['d'], course1ClockTime['end_hour'], course1ClockTime['end_minute']);
     let course2EndTime = new Date(course2DateTime['y'], course2DateTime['m'], course2DateTime['d'], course2ClockTime['end_hour'], course2ClockTime['end_minute']);
 
-    if((course1StartTime > course2StartTime && course1StartTime < course2EndTime)  ||
-    (course1EndTime < course2EndTime && course1EndTime > course2StartTime) ||
-    (course1StartTime <= course2StartTime && course1EndTime >= course2EndTime)
-    ){
-        return true;
-    }
+    if(
+        (course1StartTime.getHours() === 0 && course1StartTime.getMinutes() === 0 && course1EndTime.getHours() === 0 && course1EndTime.getMinutes() === 0) ||
+        (course2StartTime.getHours() === 0 && course2StartTime.getMinutes() === 0 && course2EndTime.getHours() === 0 && course2EndTime.getMinutes() === 0)
+    ) return false;
+    
+    
+    if(
+        (course1StartTime > course2StartTime && course1StartTime < course2EndTime)  ||
+        (course1EndTime < course2EndTime && course1EndTime > course2StartTime) ||
+        (course1StartTime <= course2StartTime && course1EndTime >= course2EndTime)
+    ) return true;
     
     return false;
 }
