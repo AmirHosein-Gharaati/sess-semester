@@ -547,7 +547,7 @@
             </v-flex>
 
             <v-flex align-self="center" class="text-center ma-2">
-              <h3 class="font-weight-bold white--text">نسخه 0.1.3</h3>
+              <h3 class="font-weight-bold white--text">نسخه 0.1.4</h3>
             </v-flex>
           </v-layout>
 

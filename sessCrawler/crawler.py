@@ -1,6 +1,4 @@
 from selenium import webdriver
-# from selenium.webdriver.common.keys import Keys
-# from selenium.webdriver.common.by import By
 from selenium.webdriver.support.select import Select
 import json
 import re
@@ -100,25 +98,41 @@ select_object = Select(select_element)
 all_obj_name = [arabicToPersian(string.text) for string in select_object.options[1:]]
 # select units 
 
-toCrowlIndexes = [1,9,10,12,18,41,77,78,91]
-# for j in range(1, 6):
-for j in toCrowlIndexes:
+toCrawlIndexes = [1,9,10,12,18,41,77,78,91]
+
+for j in toCrawlIndexes:
     datas = dict()
     select_element = Driver.find_element_by_id('edDepartment')
     select_object = Select(select_element)
     select_object.select_by_index(j)
     Driver.find_element_by_id('edDisplay').click()
-    print("crowling ",select_element, " ...")
+    print("crawling ",select_element, " ...")
     
-    for item in ['listOdd', 'listEven']:
-        length = len(Driver.find_elements_by_class_name(item))
-        # length=min(length, 2)
-        for i in range(length):
-            courses = Driver.find_elements_by_class_name(item)
-            courses[i].click()
+
+    listOdd = 'listOdd'
+    listEven = 'listEven'
+    lengthOdd = len(Driver.find_elements_by_class_name(listOdd))
+    
+    for i in range(lengthOdd):
+        # Odd list
+        coursesOdd = Driver.find_elements_by_class_name(listOdd)
+        
+        coursesOdd[i].click()
+        serial, data = get_course_details()
+        datas[serial] = data
+        Driver.back()
+
+        # Even list
+        coursesEven = Driver.find_elements_by_class_name(listEven)
+
+        try:
+            coursesEven[i].click()
             serial, data = get_course_details()
             datas[serial] = data
             Driver.back()
+        except Exception as e:
+            pass
+    
     all_data[all_obj_name[j-1]] = datas
     Driver.back()
 
