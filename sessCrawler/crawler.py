@@ -100,7 +100,7 @@ select_object = Select(select_element)
 all_obj_name = [arabicToPersian(string.text) for string in select_object.options[1:]]
 # select units 
 
-toCrowlIndexes = [1,9,10,12,18,41,91]
+toCrowlIndexes = [1,9,10,12,18,41,77,78,91]
 # for j in range(1, 6):
 for j in toCrowlIndexes:
     datas = dict()

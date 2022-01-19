@@ -537,8 +537,8 @@
               class="text-center white--text ma-2"
               lg4
             >
-              <h3 class="font-weight-bold">به روز شده در: ۲۸ دی ۱۴۰۰</h3>
-              <h4 class="font-weight-bold">ساعت ۱۵:۳۰</h4>
+              <h3 class="font-weight-bold">به روز شده در: ۲۹ دی ۱۴۰۰</h3>
+              <h4 class="font-weight-bold">ساعت ۱۰:۰۰</h4>
             </v-flex>
 
             <v-flex align-self="center" lg4 class="ma-2 text-center">
@@ -563,8 +563,8 @@
               class="text-center white--text mt-6"
               xs12
             >
-              <h4 class="font-weight-bold">به روز شده در: ۲۸ دی ۱۴۰۰</h4>
-              <h4 class="font-weight-bold">ساعت ۱۵:۳۰</h4>
+              <h4 class="font-weight-bold">به روز شده در: ۲۹ دی ۱۴۰۰</h4>
+              <h4 class="font-weight-bold">ساعت ۱۰:۰۰</h4>
             </v-flex>
           </v-layout>
         </div>
