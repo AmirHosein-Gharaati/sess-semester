@@ -537,8 +537,8 @@
               class="text-center white--text ma-2"
               lg4
             >
-              <h3 class="font-weight-bold">به روز شده در: ۲۹ دی ۱۴۰۰</h3>
-              <h4 class="font-weight-bold">ساعت ۱۶:۱۵</h4>
+              <h3 class="font-weight-bold">{{ updateTimeDateText }}</h3>
+              <h4 class="font-weight-bold">{{ updateTimeClockText }}</h4>
             </v-flex>
 
             <v-flex align-self="center" lg4 class="ma-2 text-center">
@@ -563,8 +563,8 @@
               class="text-center white--text mt-6"
               xs12
             >
-              <h4 class="font-weight-bold">به روز شده در: ۲۹ دی ۱۴۰۰</h4>
-              <h4 class="font-weight-bold">ساعت ۱۶:۱۵</h4>
+              <h4 class="font-weight-bold">{{ updateTimeDateText }}</h4>
+              <h4 class="font-weight-bold">{{ updateTimeClockText }}</h4>
             </v-flex>
           </v-layout>
         </div>
@@ -868,6 +868,8 @@ export default {
       ],
 
       selectedList: [],
+      updateTimeDateText: 'به روز شده در ۳۰ دی ۱۴۰۰',
+      updateTimeClockText: 'ساعت ۱۳:۴۵'
     };
   },
 
@@ -1092,7 +1094,6 @@ export default {
       if (this.results.length === 0) {
         this.results.push(-1);
       }
-      // this.getEvents()
     },
     remove(item) {
       if (item.parent.label.includes("بخش")) {
@@ -1100,10 +1101,7 @@ export default {
       } else if (item.parent.label.includes("درس")) {
         this.filters.course.splice(this.filters.course.indexOf(item.item), 1);
       } else if (item.parent.label.includes("نام استاد")) {
-        this.filters.teacherName.splice(
-          this.filters.teacherName.indexOf(item.item),
-          1
-        );
+        this.filters.teacherName.splice(this.filters.teacherName.indexOf(item.item), 1);
       } else if (item.parent.label.includes("نیمسال تحصیلی")) {
         this.filters.semester = "";
       } else if (item.parent.label.includes("مکان برگزاری کلاس")) {
