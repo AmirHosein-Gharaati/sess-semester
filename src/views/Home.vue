@@ -547,7 +547,7 @@
             </v-flex>
 
             <v-flex align-self="center" class="text-center ma-2">
-              <h3 class="font-weight-bold white--text">نسخه 0.1.5</h3>
+              <h3 class="font-weight-bold white--text">نسخه {{ version }}</h3>
             </v-flex>
           </v-layout>
 
@@ -863,7 +863,6 @@ export default {
         { text: "درس", value: "title" },
         { text: "استاد", value: "teacher" },
         { text: "گروه", value: "group" },
-        // { text: "واحد", value: "vahed" },
         { text: "زمان و مکان کلاس", value: "time_room" },
       ],
 
@@ -1112,7 +1111,7 @@ export default {
     },
   },
   computed: {
-    ...mapFields(["filters", "json", "course", "results"]),
+    ...mapFields(["filters", "json", "course", "results", "version"]),
     ...mapGetters([
       "getSemesters",
       "getUnits",

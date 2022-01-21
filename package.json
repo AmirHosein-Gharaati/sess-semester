@@ -1,19 +1,22 @@
 {
   "name": "sess-semester",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
     "postinstall": "npm run build",
-    "start": "node server.js" 
+    "start": "node server.js"
   },
   "dependencies": {
     "core-js": "^3.6.5",
     "express": "^4.17.1",
+    "js-cookie": "^3.0.1",
     "serve-static": "^1.14.1",
     "vue": "^2.6.11",
+    "vue-cookie": "^1.1.4",
+    "vue-cookies": "^1.7.4",
     "vue-router": "^3.2.0",
     "vuetify": "^2.4.0",
     "vuex": "^3.4.0",

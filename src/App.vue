@@ -2,30 +2,67 @@
   <v-app>
     <v-main>
         <router-view></router-view>
+        <v-dialog v-model="dialog" width="500">
+            <v-card>
+              <v-card-title class="grey lighten-2">
+                title
+              </v-card-title>
+
+              <v-card-text class="mt-4">
+                <v-list>
+                  <v-list-item v-for="item in changesLogs" :key="item">
+                    <p>{{ item }}</p>
+                  </v-list-item>
+                </v-list>
+              </v-card-text>  
+              <v-card-actions>
+                <v-spacer></v-spacer>
+                <v-btn color="primary" text @click="dialog = false">
+                  بستن
+                </v-btn>
+              </v-card-actions>
+            </v-card>
+          </v-dialog>
     </v-main>
   </v-app>
 </template>
 
 <script>
 import { mapFields } from "vuex-map-fields";
-import j from "./2903.json";
+import data from "./data/data.json";
 import "./assets/css/font.css";
 import { teacherNameDivider } from './helpers/teacherName';
 import  { toFarsiNumber} from './helpers/english_to_persian';
+import { mapActions, mapGetters } from 'vuex';
 
 
 export default {
   name: "App",
-
+  data(){
+    return {
+      dialog: false,
+    }
+  },
   computed: {
     ...mapFields(["filtersItems", "json", "filters"]),
+    ...mapGetters(["getChanges"]),
+    changesLogs(){
+      return this.$store.getters['home/getChanges'];
+    },
   },
   methods: {
+    ...mapActions(["cookieIsAvailable", "generateChangesLog"]),
   },
   mounted() {
-    this.json = j;
 
+    if(this.cookieIsAvailable()){
+      this.generateChangesLog();
+      if(this.changesLogs !== []){
+        this.dialog = true;
+      }
+    }
 
+    this.json = data;
     //initializing filters for search
       for (let unit in this.json) {
         
@@ -67,6 +104,8 @@ export default {
         }
         
       }
+
+      
   },
 };
 </script>
