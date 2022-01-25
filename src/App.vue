@@ -8,7 +8,7 @@
 
 <script>
 import { mapFields } from "vuex-map-fields";
-import j from "./2903.json";
+import j from "./data/data.json";
 import "./assets/css/font.css";
 import { teacherNameDivider } from './helpers/teacherName';
 import  { toFarsiNumber} from './helpers/english_to_persian';
@@ -19,8 +19,6 @@ export default {
 
   computed: {
     ...mapFields(["filtersItems", "json", "filters"]),
-  },
-  methods: {
   },
   mounted() {
     this.json = j;
