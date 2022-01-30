@@ -98,7 +98,7 @@ select_object = Select(select_element)
 all_obj_name = [arabicToPersian(string.text) for string in select_object.options[1:]]
 # select units 
 
-toCrawlIndexes = [1,9,10,12,18,41,77,78,91]
+toCrawlIndexes = [1,9,10,12,18,41,74,77,78,91]
 
 for j in toCrawlIndexes:
     datas = dict()
