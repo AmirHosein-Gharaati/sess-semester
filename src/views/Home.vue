@@ -868,8 +868,8 @@ export default {
       ],
 
       selectedList: [],
-      updateTimeDateText: 'به روز شده در ۲۱ بهمن',
-      updateTimeClockText: 'ساعت ۱۳:۱۰'
+      updateTimeDateText: 'به روز شده در ۲۸ بهمن',
+      updateTimeClockText: 'ساعت ۱۱:۴۵'
     };
   },
 
