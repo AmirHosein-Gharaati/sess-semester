@@ -10,17 +10,17 @@ const state = {
     teacherName: [],
     time: [],
     place: [],
-    gender : [],
+    gender: [],
   },
 
   filtersItems: {
-    semesters: ['1400-2'],
+    semesters: ["1401-1"],
     units: [],
     course: [],
     teachersName: [],
     times: [],
     places: [],
-    genders : [],
+    genders: [],
   },
 
   json: null,
@@ -33,8 +33,8 @@ const getters = {
   getUnits: (state) => state.filtersItems.units,
   getCourses: (state) => state.filtersItems.course,
   getTeachers: (state) => state.filtersItems.teachersName,
-  getPlaces : (state) => state.filtersItems.places,
-  getGenders : (state) => state.filtersItems.genders,
+  getPlaces: (state) => state.filtersItems.places,
+  getGenders: (state) => state.filtersItems.genders,
   getJson: (state) => state.json,
 };
 
