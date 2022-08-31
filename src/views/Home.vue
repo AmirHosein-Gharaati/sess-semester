@@ -499,7 +499,6 @@
                 </v-row>
               </v-list-item>
             </v-list>
-
           </v-card-text>
           <v-divider></v-divider>
           <v-card-actions>
@@ -782,7 +781,7 @@ import {
 } from "../helpers/timeInterference";
 import { convertPersianNumToEng } from "../helpers/persianNumber_To_English";
 import { toFarsiNumber } from "../helpers/english_to_persian";
-import { teacherSearch } from '../helpers/teacherName';
+import { teacherSearch } from "../helpers/teacherName";
 export default {
   name: "Home",
   data() {
@@ -868,8 +867,8 @@ export default {
       ],
 
       selectedList: [],
-      updateTimeDateText: 'به روز شده در ۱ شهریور',
-      updateTimeClockText: 'ساعت ۱۹:۰۰'
+      updateTimeDateText: "به روز شده در ۹ شهریور",
+      updateTimeClockText: "ساعت ۱۷:۴۰",
     };
   },
 
@@ -1067,20 +1066,43 @@ export default {
       this.results = [];
 
       for (let unit in this.json) {
-        if (this.filters.unit.length === 0 || this.filters.unit.includes(unit)) {
+        if (
+          this.filters.unit.length === 0 ||
+          this.filters.unit.includes(unit)
+        ) {
           for (let course in this.json[unit]) {
-            if (this.filters.course.length === 0 || this.filters.course.includes(this.json[unit][course]["title"])) {
-              if (this.filters.teacherName.length === 0 ||
-                teacherSearch(this.json[unit][course]["teacher"], this.filters.teacherName)
+            if (
+              this.filters.course.length === 0 ||
+              this.filters.course.includes(this.json[unit][course]["title"])
+            ) {
+              if (
+                this.filters.teacherName.length === 0 ||
+                teacherSearch(
+                  this.json[unit][course]["teacher"],
+                  this.filters.teacherName
+                )
               ) {
-                if (this.filters.gender.length === 0 || 
+                if (
+                  this.filters.gender.length === 0 ||
                   this.filters.gender.includes(
                     this.json[unit][course]["gender"]
                   )
                 ) {
-                  if (this.filters.place.length === 0 || placeSearchHelper(this.filters.place, this.json[unit][course])) {
-                    if ((this.timeStart.length == 0 &&this.timeEnd.length == 0) ||
-                      isTimeInBetween(this.timeStart, this.timeEnd, this.json[unit][course].seperated_time_and_place)
+                  if (
+                    this.filters.place.length === 0 ||
+                    placeSearchHelper(
+                      this.filters.place,
+                      this.json[unit][course]
+                    )
+                  ) {
+                    if (
+                      (this.timeStart.length == 0 &&
+                        this.timeEnd.length == 0) ||
+                      isTimeInBetween(
+                        this.timeStart,
+                        this.timeEnd,
+                        this.json[unit][course].seperated_time_and_place
+                      )
                     ) {
                       this.results.push(this.json[unit][course]);
                     }
@@ -1101,7 +1123,10 @@ export default {
       } else if (item.parent.label.includes("درس")) {
         this.filters.course.splice(this.filters.course.indexOf(item.item), 1);
       } else if (item.parent.label.includes("نام استاد")) {
-        this.filters.teacherName.splice(this.filters.teacherName.indexOf(item.item), 1);
+        this.filters.teacherName.splice(
+          this.filters.teacherName.indexOf(item.item),
+          1
+        );
       } else if (item.parent.label.includes("نیمسال تحصیلی")) {
         this.filters.semester = "";
       } else if (item.parent.label.includes("مکان برگزاری کلاس")) {
