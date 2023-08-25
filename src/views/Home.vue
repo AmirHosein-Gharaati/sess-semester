@@ -867,8 +867,8 @@ export default {
       ],
 
       selectedList: [],
-      updateTimeDateText: "به روز شده در ۱۲ بهمن",
-      updateTimeClockText: "ساعت ۲۱:۵۰",
+      updateTimeDateText: "به روز شده در ۳ شهریور",
+      updateTimeClockText: "ساعت ۲۳:۳۰",
     };
   },
 
